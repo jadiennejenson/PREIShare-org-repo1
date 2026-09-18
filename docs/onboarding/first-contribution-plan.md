@@ -1,17 +1,17 @@
 # First contribution plan — PREIshare onboarding
 
 ## Author
-- Name / GitHub handle: <your-handle>
-- Feature branch: docs/first-contribution-<your-handle>
-- Date: <2026-09-18>
+- Name / GitHub handle: Jade Jenson (`jadiennejenson`)
+- Feature branch: `docs/first-contribution-jadiennejenson`
+- Date: 2026-09-18
 
 ## One-sentence goal
 Add myself as a new contributor in a contributors doc and make one minimal, reviewable docs (or agreed low-risk UI) touch so the team can practice review on a small first PR.
 
 ## Why this surface (link to prior artifacts)
-- From `docs/onboarding/repo-map.md`: <quote the safe area you chose, e.g. top-level docs / onboarding paths>
-- From `docs/onboarding/team-orientation-notes.md`: <how this meets first-PR definition of done>
-- From `docs/onboarding/ai-tooling-verification.md`: <note that agent rules are verified enough to assist implementation next>
+- From `docs/onboarding/repo-map.md`: "`docs/onboarding/` | Docs-only; helps the team | Misleading docs" and "Pick a first contribution only from **Safe first-touch** unless a mentor expands scope."
+- From `docs/onboarding/team-orientation-notes.md`: "The change is intentionally small" and "A teammate can understand the diff without a meeting" are part of the first-PR definition of done.
+- From `docs/onboarding/ai-tooling-verification.md`: "Final results: ST1 PASS; ST2 PASS; ST3 PASS; ST4 PASS after one refinement." The rules are verified enough to assist with this narrowly scoped docs contribution.
 
 ## In scope (only these)
 1. Create or update `CONTRIBUTORS.md` with my name, GitHub handle, and a one-line role (e.g. "Onboarding engineer").
@@ -31,11 +31,11 @@ Add myself as a new contributor in a contributors doc and make one minimal, revi
 | File | Action | Why |
 |------|--------|-----|
 | CONTRIBUTORS.md | create or update | Add my contributor entry |
-| <optional second path from repo-map> | edit | <one-line reason or "n/a"> |
+| n/a | n/a | No optional second touch is planned. |
 | docs/onboarding/first-contribution-notes.md | create (next step) | Record what the agent did and what I verified |
 
 ## Acceptance criteria
-- [ ] I am on feature branch `docs/first-contribution-<your-handle>` (not the default branch).
+- [x] I am on feature branch `docs/first-contribution-jadiennejenson` (not the default branch).
 - [ ] `CONTRIBUTORS.md` lists my name and GitHub handle in a consistent format.
 - [ ] Any second touch is limited to the single file named above and does not change behavior beyond copy/docs.
 - [ ] No secrets, `.env` files, or generated build artifacts are included.
@@ -52,6 +52,6 @@ Add myself as a new contributor in a contributors doc and make one minimal, revi
 - Risk: Editing default branch by mistake. Mitigation: check `git branch` before every edit session.
 
 ## Definition of done for this planning step
-- [ ] Feature branch created from updated default branch.
-- [ ] This plan file saved at `docs/onboarding/first-contribution-plan.md` with all sections filled (no angle-bracket placeholders left).
+- [x] Feature branch `docs/first-contribution-jadiennejenson` created from the default branch.
+- [x] This plan file saved at `docs/onboarding/first-contribution-plan.md` with all sections filled (no angle-bracket placeholders left).
 - [ ] Ready to implement in the next step without re-deciding scope.

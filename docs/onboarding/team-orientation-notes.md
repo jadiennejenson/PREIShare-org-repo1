@@ -1,7 +1,7 @@
 # PREIshare team orientation notes
 
-Author: <your name>
-Date: <YYYY-MM-DD>
+Author: Jade Jenson
+Date: 2026-09-17
 
 ## 0. Team repository of record
 
