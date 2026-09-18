@@ -1,8 +1,8 @@
 # PREIshare setup log
 
-**Learner:** <Jade Jenson>
-**Date:** <2026-09-17>
-**OS:** <Windows / macOS / Linux + version if known>
+**Learner:** Jade Jenson
+**Date:** 2026-09-17
+**OS:** macOS
 **Team repo (upstream):** https://github.com/EdTechForLearning/PREIShare-org-repo
 **Orientation notes used:** `docs/onboarding/team-orientation-notes.md`
 
@@ -17,22 +17,21 @@
 ## 2. Git install and identity
 
 ```text
-# paste output of: git --version
+git version 2.33.0
 
-# paste output of: git config --global user.name
-# paste output of: git config --global user.email
-# (email may be partially redacted in shared copies)
+jadiennejenson
+10935974@uvu.edu
 ```
 
-Identity configured: PASS / FAIL
+Identity configured: PASS
 
 ## 3. Clone (of MY fork)
 
-- Parent directory used: `<path>`
-- Clone command used: `git clone https://github.com/jadiennejenson/PREIShare-org-repo.git`
+- Parent directory used: `/Users/jade`
+- Clone command used: `git clone https://github.com/jadiennejenson/PREIShare-org-repo1.git`
 - Cloned my fork (not the team repo): PASS
 - Clone completed without error: PASS
-- Local project path: `<path-to-cloned-folder>`
+- Local project path: `/Users/jade/PREIShare-org-repo1`
 
 ## 4. Remotes (run inside the repo)
 
@@ -41,11 +40,10 @@ Identity configured: PASS / FAIL
 ### git remote -v
 
 ```text
-# paste output — expect four lines:
-# origin    https://github.com/jadiennejenson/PREIShare-org-repo1.git (fetch)
-# origin    https://github.com/jadiennejenson/PREIShare-org-repo1.git (push)
-# upstream  https://github.com/EdTechForLearning/PREIShare-org-repo.git (fetch)
-# upstream  https://github.com/EdTechForLearning/PREIShare-org-repo.git (push)
+origin  https://github.com/jadiennejenson/PREIShare-org-repo1.git (fetch)
+origin  https://github.com/jadiennejenson/PREIShare-org-repo1.git (push)
+upstream  https://github.com/EdTechForLearning/PREIShare-org-repo.git (fetch)
+upstream  https://github.com/EdTechForLearning/PREIShare-org-repo.git (push)
 ```
 
 origin points at MY fork: PASS
@@ -56,18 +54,17 @@ upstream points at the team repo: PASS
 ### git status
 
 ```text
-# paste output — expect clean tree on default branch
+ M docs/onboarding/setup-log.md
 ```
 
 ### Default branch
 
 ```text
-# paste output of: git branch --show-current
-# or: git branch
+main
 ```
 
-Default branch name: `<main or other>`
-Working tree clean after clone: PASS
+Default branch name: `main`
+Working tree clean after clone: FAIL (the setup log was edited after cloning)
 
 ## 6. Auth notes (no secrets)
 
@@ -80,7 +77,7 @@ Working tree clean after clone: PASS
 
 | Issue | What I tried | Outcome |
 | --- | --- | --- |
-| <none or describe> | | |
+| Clone command used the fork name without the `1` suffix | Updated the setup log to use `PREIShare-org-repo1` consistently | Resolved |
 
 ## 8. Ready for next step
 
