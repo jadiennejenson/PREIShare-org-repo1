@@ -1,0 +1,4 @@
+// https://vite.dev/config/
+export default {
+  plugins: [],
+}
