@@ -6,7 +6,7 @@ Date: <YYYY-MM-DD>
 ## 0. Team repository of record
 
 - **Team repo (upstream):** https://github.com/EdTechForLearning/PREIShare-org-repo
-- **My fork (created in Step 3):** https://github.com/<your-github-username>/PREIShare-org-repo
+- **My fork (created in Step 3):** https://github.com/jadiennejenson/PREIShare-org-repo1
 - I contribute by forking this repo and opening pull requests from my fork. I do not push to the team repo directly.
 
 ## 1. Product mission (my words)
