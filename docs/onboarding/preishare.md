@@ -1,0 +1,45 @@
+---
+description: PREIshare project rules for AI coding agents
+alwaysApply: true
+---
+
+# PREIshare — agent rules
+
+## Project identity
+PREIshare is a real-estate intelligence product. This checkout is currently a single Vite package, not a monorepo: there is one visible app under `src/`, with no `apps/` or `packages/` directory.
+
+## Stack (do not substitute)
+- Verified current stack: TypeScript, React, React DOM, and Vite.
+- Verified app entry: `index.html` -> `src/main.tsx` -> `src/App.tsx`.
+- Verified configuration: `package.json`, `vite.config.ts`, `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json`, and `eslint.config.js`.
+- TanStack Start, Supabase, PostgreSQL, and pgvector are team/domain context but are not present as current dependencies or configuration in this checkout; do not claim they are implemented here without evidence.
+- Collaboration: Git + GitHub pull requests
+
+## Where to work (new contributors)
+- Safe first surfaces: docs/, CONTRIBUTORS-style root docs, small clearly scoped UI copy or comments the team already identified
+- Read before edit: docs/onboarding/repo-map.md and package/app README files that exist in-repo
+- Avoid unless explicitly tasked: auth, billing, database migrations, CI secrets, large dependency upgrades
+- No route directory was found; user-facing UI currently starts in `src/App.tsx`.
+
+## How to change code
+- Prefer the smallest diff that completes the requested task
+- Match existing naming, file layout, and TypeScript style in neighboring files
+- Do not drive-by refactor unrelated modules
+- Do not add new libraries unless the human explicitly asks and justifies them
+
+## Secrets and safety
+- Never commit `.env`, API keys, tokens, or connection strings
+- Never print secrets into docs, rules, or chat logs
+- If a change needs configuration, document the variable *name* only (for example `SUPABASE_URL`), not a real value
+- Do not commit generated `dist/` output or local `node_modules/` changes unless the team explicitly requires them.
+- Treat `package-lock.json`, root build/config files, CI, migrations, and production data configuration as review-required changes.
+
+## Agent workflow
+- Restate the goal and list files you will touch before editing
+- Implement in small steps; stop for verification after each logical unit
+- When unsure about PREIshare structure, consult docs/onboarding/ and the repo map rather than inventing paths
+
+## Out of scope defaults
+- No rewriting the entire app "for best practices" unprompted
+- No changing product requirements silently—flag product questions to the human
+- For a first contribution, make one small, reviewable docs or clearly scoped UI change and avoid drive-by refactors.
