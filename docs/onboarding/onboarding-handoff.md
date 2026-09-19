@@ -1,8 +1,8 @@
 # PREIshare onboarding handoff
 
-**Author:** <your name or GitHub handle>  
-**Date:** <YYYY-MM-DD>  
-**Branch / PR:** <branch name> — <PR URL or "ready to open">  
+**Author:** <jadiennejenson>  
+**Date:** <2026-09-19>  
+**Branch / PR:** <jadiennejenson> — <PR URL or "ready to open">  
 **Audience:** mentor, future self, sprint lead
 
 ## 1. Stakeholder summary (plain language)
@@ -75,7 +75,7 @@ If none, write "None known" and state what you would re-verify on day one of the
 | Decision | Choice | Rationale |
 | --- | --- | --- |
 | First contribution surface | e.g. CONTRIBUTORS.md | Low risk, visible, matches onboarding plan |
-| Branch naming | e.g. docs/onboarding-<name> | Matches team Git habit from orientation |
+| Branch naming | e.g. docs/onboarding-handoff | Matches team Git habit from orientation |
 | AI tool category used most | coding-agent / ide-copilot / chat-assistant | Why it fit each task |
 
 ## 8. Next-sprint preview (what this unlocks)
