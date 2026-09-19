@@ -1,7 +1,7 @@
 # PREIshare onboarding handoff
-**Author:** Jade Jenson (`jadiennejenson`)  
-**Date:** 2026-09-19  
-**Branch / PR:** `docs/first-contribution-jadiennejenson` — ready to open at [the cross-fork comparison](https://github.com/EdTechForLearning/PREIShare-org-repo/compare/main...jadiennejenson:docs/first-contribution-jadiennejenson)  
+**Author:** Jade Jenson (`jadiennejenson`)
+**Date:** 2026-09-19
+**Branch / PR:** `docs/first-contribution-jadiennejenson` — ready to open at [the cross-fork comparison](https://github.com/EdTechForLearning/PREIShare-org-repo/compare/main...jadiennejenson:docs/first-contribution-jadiennejenson)
 **Audience:** mentor, future self, sprint lead
 ## 1. Stakeholder summary (plain language)
 I completed PREIshare engineering onboarding for Sprint 1: development environment, repository orientation, and AI tooling. I forked the team repository, cloned my fork, configured origin and upstream, verified Git identity and the local build, configured project rules, mapped the repository, and prepared a small contribution for review. The contribution adds a contributor record and onboarding evidence, and moves the investor-listing model into a shared TypeScript type used by all four samples. PREIshare remains a real-estate intelligence product; this work does not ship a user-facing feature. It demonstrates that I can join the team workflow safely and leave an auditable record for mentors.
