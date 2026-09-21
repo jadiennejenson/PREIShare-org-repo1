@@ -28,6 +28,19 @@ export interface InvestorListing {
 
 import type { ListingStatus } from "./listing-status";
 import type { PropertyType } from "./property-type";
+import type { Address } from "./address";
+import type { FinancialSummary } from "./financial-summary";
+
+export interface InvestorListing {
+  id: string;
+  title: string;
+  status: ListingStatus;
+  propertyType: PropertyType;
+  address: Address;
+  financialSummary?: FinancialSummary;
+  // ...other fields you already modeled stay here;
+  // do not re-declare street/city/noi as flat duplicates
+}
 
 export interface InvestorListing {
   // ...other fields from the previous step stay as they are...
