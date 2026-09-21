@@ -1,7 +1,7 @@
 # PREIshare team orientation notes
 
-Author: <your name>
-Date: <YYYY-MM-DD>
+Author: Jade Jenson
+Date: 2026-09-17
 
 ## 0. Team repository of record
 
@@ -17,7 +17,10 @@ product as a modern web app (TypeScript, TanStack Start, React, Supabase,
 PostgreSQL, pgvector). My job as a new contributor is to join that shipping
 loop safely—not to rewrite the product on day one.
 
-## 2. Everyday collaboration → engineering workflow
+## 2. Draft → PR mapping
+
+The everyday draft-and-review process maps to PREIshare's engineering workflow
+like this:
 
 | Everyday picture | PREIshare engineering parallel |
 | --- | --- |
@@ -51,9 +54,15 @@ My first reviewed PR is done only when all of the following are true:
 - Secrets, production credentials, or real customer data
 - “While I was here” unrelated edits that enlarge review risk
 
-## 6. How I will use AI on this team
+## 6. My AI-use stance
 
-I will prompt agents in small cycles: understand → plan → prompt → review → refine.
-I will not paste secrets into agents. I will not accept agent output I cannot explain.
+AI is an assistant for discovery, drafting, and verification; it is not the
+owner of a change. I will prompt agents in small cycles: understand → plan →
+prompt → review → refine. I remain accountable for the code and documentation
+that I submit, and I will not accept agent output I cannot explain.
+
+I will not paste secrets, credentials, private customer data, or other sensitive
+material into agents. I will check the diff, run the relevant validation, and
+ask a human reviewer when context or risk exceeds my understanding.
 Orientation complete means I can tell a human what PREIshare is, who is in the
 PR loop, and what “first PR done” means—before I configure tools or write code.

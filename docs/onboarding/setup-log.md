@@ -6,13 +6,25 @@
 **Team repo (upstream):** https://github.com/EdTechForLearning/PREIShare-org-repo
 **Orientation notes used:** `docs/onboarding/team-orientation-notes.md`
 
+## Required setup checks
+
+| Check | Result | Verified value |
+| --- | --- | --- |
+| `git --version` | PASS | `git version 2.33.0` |
+| `git config user.name` | PASS | `jadiennejenson` |
+| `git config user.email` | PASS | `10935974@uvu.edu` |
+| Clone path | PASS | `/Users/jade/PREIShare-org-repo1` |
+| `origin` points to my fork | PASS | `https://github.com/jadiennejenson/PREIShare-org-repo1.git` |
+| `upstream` points to the team repo | PASS | `https://github.com/EdTechForLearning/PREIShare-org-repo.git` |
+| Required setup facts verified | PASS | All checks above match this checkout |
+
 ## 1. Accounts and fork
 
 | Check | Result | Notes |
 | --- | --- | --- |
 | GitHub sign-in works | PASS | Account username: jadiennejenson |
 | Can view team repo https://github.com/EdTechForLearning/PREIShare-org-repo | PASS | |
-| Fork created in my account | PASS| My fork URL: https://github.com/jadiennejenson/PREIShare-org-repo1 |
+| Fork created in my account | PASS | My fork URL: https://github.com/jadiennejenson/PREIShare-org-repo1 |
 
 ## 2. Git install and identity
 

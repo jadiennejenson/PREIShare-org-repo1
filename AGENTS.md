@@ -16,7 +16,11 @@ This repository contains PREIshare, a root-level React 19 and Vite application. 
 ## Read these first
 
 - `.cursor/rules/preishare.mdc` is the primary project rules file. Follow it for architecture, security, environment variables, generated files, and validation expectations.
-- `docs/onboarding/` contains the repository map and domain onboarding material. Start with `docs/onboarding/repo-map.md` when locating code or deciding where a change belongs.
+- `docs/onboarding/` contains the repository map and domain onboarding material. Start with these references when locating code or deciding where a change belongs:
+	- [Setup log](docs/onboarding/setup-log.md)
+	- [Repository map](docs/onboarding/repo-map.md)
+	- [Team orientation](docs/onboarding/team-orientation-notes.md)
+	- [AI tooling verification](docs/onboarding/ai-tooling-verification.md)
 
 ## Repository shape
 

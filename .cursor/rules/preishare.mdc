@@ -39,6 +39,12 @@ PREIshare is a real-estate intelligence product. This checkout is currently a si
 - Implement in small steps; stop for verification after each logical unit
 - When unsure about PREIshare structure, consult docs/onboarding/ and the repo map rather than inventing paths
 
+## Onboarding references
+- [Setup log](../../docs/onboarding/setup-log.md) records the verified clone, Git identity, and remotes.
+- [Repository map](../../docs/onboarding/repo-map.md) identifies safe contribution surfaces and current codebase gaps.
+- [Team orientation](../../docs/onboarding/team-orientation-notes.md) explains the mission, draft-to-PR workflow, actors, and first-PR definition of done.
+- [AI tooling verification](../../docs/onboarding/ai-tooling-verification.md) records the tested agent guidance and its limitations.
+
 ## Out of scope defaults
 - No rewriting the entire app "for best practices" unprompted
 - No changing product requirements silently—flag product questions to the human
