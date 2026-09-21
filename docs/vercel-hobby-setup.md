@@ -7,9 +7,9 @@
 
 | Item | Value |
 | --- | --- |
-| GitHub repository (you can push) | `https://github.com/jadiennejenson/PREIShare-org-repo1` |
-| Instructor collaborator | `thortek` added: not verified |
-| Vercel Production URL | Not available: Vercel authentication and project access required |
+| GitHub repository (you can push) | `https://github.com/jadiennejenson/<repo>` |
+| Instructor collaborator | `thortek` added: yes / no |
+| Vercel Production URL | `https://<project>.vercel.app` |
 | Preview URLs | Do **not** submit these to Canvas |
 
 ## Hobby constraints I will keep
@@ -21,5 +21,5 @@
 
 ## First production deploy
 
-- Status: Blocked — Vercel CLI and dashboard both require login before deployment
-- Incognito check of Production URL: not run; no verified production URL exists yet
+- Status: Ready / Failed (if failed, paste what you changed)
+- Incognito check of Production URL: pass / fail
