@@ -1,3 +1,7 @@
+// src/fixtures/sample-investor-listings.ts
+// Scaffold: your agent should produce a file with this structure.
+// Field names and union members MUST match your types from earlier steps.
+
 import type { InvestorListing } from "../types";
 
 /** Active multifamily listing with full nested shapes. */
@@ -34,6 +38,7 @@ export const sampleActiveListing: InvestorListing = {
     ownershipPercent: 100,
     isPrimary: true
   }
+  // Include any other required InvestorListing fields from your model
 };
 
 /** Draft listing — still being prepared; may use draft-only fields if your discriminated union requires them. */
