@@ -25,3 +25,13 @@ export interface InvestorListing {
   /** ISO-8601 datetime string when the listing was last updated. */
   updatedAt: string;
 }
+
+import type { ListingStatus } from "./listing-status";
+import type { PropertyType } from "./property-type";
+
+export interface InvestorListing {
+  // ...other fields from the previous step stay as they are...
+  status: ListingStatus;
+  propertyType: PropertyType;
+  // ...
+}
