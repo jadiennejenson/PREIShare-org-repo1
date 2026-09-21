@@ -48,3 +48,19 @@ export interface InvestorListing {
   propertyType: PropertyType;
   // ...
 }
+import type { InvestorContact } from "./investor-contact";
+import type { Ownership } from "./ownership";
+// ...existing imports for Address, FinancialSummary, ListingStatus, PropertyType
+
+export interface InvestorListing {
+  // ...existing fields: id, title, status, propertyType, address, financials, etc.
+  /** One or more people associated with this listing. */
+  contacts: InvestorContact[];
+  /**
+   * Must match InvestorContact.id of one entry in `contacts`.
+   * TypeScript cannot fully enforce "id exists in array" alone;
+   * we still type it as string so callers pass an id, not a whole loose object.
+   */
+  primaryContactId: string;
+  ownership: Ownership;
+}
