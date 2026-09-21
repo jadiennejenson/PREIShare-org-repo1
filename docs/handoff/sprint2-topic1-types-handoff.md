@@ -2,7 +2,7 @@
 
 **Audience:** next sprint topic owners, PREIshare eng, product partners  
 **Status:** Topic 1 (TypeScript foundations) complete — implementation topics not started  
-**Date:** [fill in]
+**Date:** 2026-09-20
 
 ## 1. Client story recap
 
@@ -71,13 +71,11 @@ Client pain (loose JSON)
 
 ## 5. Prompting and review self-assessment
 
-Complete in first person (example prompts below—replace with your real habits):
-
-- **Prompting habit that helped:** …
-- **Second prompting habit that helped:** …
-- **Review habit that caught an agent mistake:** …
-- **What I would do differently next topic:** …
-- **Confidence (1–5) explaining InvestorListing to a teammate:** …
+- **Prompting habit that helped:** I gave the agent a concrete file and symbol to inspect first, then asked it to compare the requested change with the canonical `InvestorListing` exports instead of inventing a parallel shape.
+- **Second prompting habit that helped:** I asked for small, falsifiable checks after each change—such as confirming the exact staged paths, running `npm run typecheck`, and checking that the README link and type names matched the repository.
+- **Review habit that caught an agent mistake:** I compared the claimed PR scope with the actual changed-file list and caught descriptions that mentioned contributor, type, fixture, and deployment work inconsistently. I also noticed when generated files or scaffold placeholders would have made the documentation misleading.
+- **What I would do differently next topic:** I would establish the intended file scope and compare it with `git diff --name-only` before writing the PR description, then keep separate commits for unrelated documentation, deployment, and model work.
+- **Confidence (1–5) explaining InvestorListing to a teammate:** 4 — I can explain the shared model, nested shapes, status union, valid fixtures, and intentional invalid cases; I would still ask a teammate to confirm API and database boundary rules in a later topic.
 
 ## 6. Handoff checklist for the next owner
 
