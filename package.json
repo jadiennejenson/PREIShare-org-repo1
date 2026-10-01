@@ -1,13 +1,23 @@
 
 {
-  "name": "preishare-investor-listing-types",
-  "version": "0.1.0",
+  "name": "preishare-investor-dashboard",
   "private": true,
-  "description": "Strict TypeScript types for PREIshare investor listings (Sprint 2 Topic 1)",
+  "type": "module",
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start"
+  },
+  "dependencies": {
+    "@tanstack/react-router": "^1.114.25",
+    "@tanstack/react-start": "^1.114.25",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.6.0"
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.0",
+    "vinxi": "^0.5.3"
   }
 }
