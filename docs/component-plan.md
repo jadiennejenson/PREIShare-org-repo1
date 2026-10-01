@@ -45,42 +45,48 @@ Components present structure and placeholder content; they do not call real APIs
 
 # Component plan
 
-The dashboard should be built as a small set of focused components with single responsibilities. This keeps the shell predictable and prevents layout logic from being mixed into display-only widgets.
+The dashboard should be built as a small set of components with single, non-overlapping responsibilities. This keeps the shell predictable and prevents layout logic from being mixed into display-only widgets.
 
 ## AppShell
 
-AppShell is the page-frame component. It owns:
+AppShell owns the page frame:
 
-- the overall dashboard layout
+- overall dashboard layout
 - header rendering
 - sidebar or mobile nav placement
 - main content region
-- shell spacing and composition
+- shell spacing and page composition
 
-AppShell should not decide how a metric is displayed. It only provides the structure of the page.
+AppShell should not decide how a metric is styled or rendered. It only provides the frame.
 
-## Sidebar and nav config
+## Nav config and sidebar
 
-The sidebar renders navigation items from a central nav data source. The nav labels and route mappings live in the shared config, such as NavItems or navConfig.
+The sidebar renders navigation items from a central source of truth. The labels and route metadata live in the shared nav config, such as NavItems or navConfig.
 
-The sidebar should not maintain separate hardcoded labels in multiple places. If a route name or label changes, the config change should be the single source of truth.
+The sidebar should not maintain a separate hardcoded list of labels. If the navigation changes, the config changes once and the sidebar reflects it.
 
 ## StatsCard
 
-StatsCard is a presentational component for one summary metric. It owns:
+StatsCard is a presentational component for a single metric. It owns:
 
 - the label
 - the value
 - optional helper text or delta copy
 - styling for the metric tile
 
-StatsCard does not own page layout, routing, or the dashboard shell. It should never be responsible for arranging multiple cards or deciding where they appear.
+StatsCard does not own layout, route composition, or dashboard shell structure. Its only job is to display one summary metric.
 
-## Activity list and empty state
+## Activity list
 
-The recent activity area should render list items or a generic empty state. It is scoped to showing recent actions or placeholder data and should not control shell layout or page composition.
+The recent-activity panel is responsible for rendering:
 
-## Division of responsibilities
+- recent items
+- empty-state messaging
+- mock-list presentation
+
+It does not govern the shell or route layout.
+
+## Ownership boundary
 
 The current plan is:
 
@@ -89,6 +95,6 @@ The current plan is:
 - sidebar: render nav data
 - StatsCard: metric display only
 - activity panel: recent-item list or empty state
-- page routes: screen content only
+- route files: page content only
 
-This keeps the component map simple and aligns with the dashboard shell we are building.
+This keeps the UI structure clear and aligned with the dashboard shell being built.

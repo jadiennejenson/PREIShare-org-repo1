@@ -35,39 +35,39 @@ Child routes: index (home), `portfolio`, `deals`, `profile`
 
 # Dashboard IA
 
-The investor dashboard is a routed section under `/dashboard`. The IA is intentionally simple so the shell can prove navigation and layout before deeper product features are added.
+The investor dashboard lives under `/dashboard` and is intentionally simple. It exists to prove routing, shell composition, and responsive navigation before deeper product work is added.
 
 ## Route structure
 
-- `/dashboard` — home dashboard shell with summary metrics and recent activity
-- `/dashboard/portfolio` — placeholder section for portfolio content
-- `/dashboard/deals` — placeholder section for deal or opportunity content
-- `/dashboard/profile` — placeholder section for investor profile or account context
+- `/dashboard` — dashboard home with summary metrics and recent activity
+- `/dashboard/portfolio` — placeholder portfolio section
+- `/dashboard/deals` — placeholder deals or opportunities section
+- `/dashboard/profile` — placeholder profile or account-context section
 
-These routes are not intended to be fully featured in this sprint. They simply prove that the app shell can switch between sections and keep a consistent frame around page content.
+These routes are not full-featured in this sprint. They exist to demonstrate that the shared dashboard shell can render different pages while keeping a consistent frame.
 
 ## Navigation model
 
-The sidebar should render navigation from a central config rather than a hardcoded component list. Labels and route targets belong in one data source, such as NavItems or navConfig. The sidebar is a renderer, not the canonical source of truth.
+The sidebar should render navigation from a central config rather than a hardcoded list. The canonical labels and route map live in the shared nav data, such as NavItems or navConfig. The sidebar is a renderer, not the source of truth.
 
-This keeps the UI consistent and avoids drift between label text, route names, and future navigation changes.
+This keeps labels aligned with routes and avoids drift between the sidebar UI and the app’s actual route configuration.
 
 ## Shell behavior
 
 The dashboard shell is the persistent frame around all route content:
 
-- header for branding and user context
+- header for brand and user context
 - sidebar or mobile nav
 - main content region
 - consistent spacing and page structure
 
-This shell is shared by every dashboard route. Route content is inserted inside it rather than replacing the frame itself.
+Every route shares this shell. Route content is inserted into the shell rather than replacing it.
 
-## Mock-only content decisions
+## Mock-only content
 
-The home page uses placeholder metric cards and a recent activity list. The content should signal that the data is still mock or not yet connected. The dashboard shell must not imply that live portfolio values or trade flows are already available.
+The home page uses placeholder metric cards and a recent activity list. These should make it clear that the data is not live yet. The shell must not imply that balances, portfolio values, or transactions are connected.
 
 ## Scope alignment
 
-This IA is intentionally limited to route proofing, layout stability, and placeholder messaging. It does not include auth flows, payments, or live investment data. The current shell should read like a stable foundation for future investor tools, not a complete product experience.
+This IA is limited to route proofing, shell stability, and placeholder messaging. It does not include auth, payments, live investment data, or deeper fintech features. The result should read like a stable dashboard foundation for future investor tools.
 
