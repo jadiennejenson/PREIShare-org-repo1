@@ -1,56 +1,71 @@
-# PREIshare investor dashboard — IA and component decisions
+# PREIshare investor dashboard scope
 
-This dashboard is a private investor landing area, not a market data product. The current sprint is limited to a shell that proves navigation, layout, and placeholder content work across desktop and mobile widths.
+This sprint is only the investor dashboard shell. It is not a live portfolio product, and it should never imply an active data feed or account management flow.
 
-## IA and route intent
+## What this dashboard is
 
-The dashboard entry point is a `/dashboard` area. The shell should feel like a controlled workspace rather than a one-off page. We are keeping the app structure straightforward:
+The investor-facing dashboard is a private home base inside the PREIshare app. The goal is to make the investor feel oriented, show a few summary metrics, and prove the app can navigate among dashboard sections without exposing unbuilt features.
+
+The shell should include:
+
+- a product header with brand and user context
+- a responsive sidebar or mobile nav
+- a main content region for route-specific panels
+- metric cards on the home page
+- a recent activity area with placeholder content
+- empty states that clearly say the data is mock or not yet connected
+
+The dashboard is intentionally a shell, not a real investment console.
+
+## IA and route purpose
+
+The dashboard area is organized around a single home route and a small set of placeholder sub-sections used to validate navigation and shell composition.
 
 - `/dashboard` is the home screen
-- nested dashboard sections are lightweight placeholder routes used to prove navigation works
-- route-level page content remains secondary to the overall shell and navigation model
-- no auth, real account data, or live portfolio calculations are in scope
+- nested dashboard sections are placeholders for future portfolio, deals, and profile views
+- route pages render inside the shared shell, not as standalone screens
+- auth, market data, and portfolio operations stay out of scope for this sprint
 
-The navigation model should be centralized. The actual labels and menu structure live in the nav data source (for example, NavItems or navConfig), while the sidebar component is responsible only for rendering the passed structure. That means the current hardcoded “Home / Portfolio / Deals / Profile” list is a temporary implementation detail, not the source of truth. The source of truth should remain the shared config so labels and route mapping stay consistent.
+The navigation labels should not be manually duplicated across the app. The source of truth is the shared nav config or NavItems data. The sidebar simply renders that data. The current hardcoded list is only a temporary implementation detail and should not become the canonical label set.
 
-## Component ownership
+## Component boundaries
 
-We are explicitly separating responsibilities to match the app structure and avoid overlap:
+Each UI element has one clear job:
 
-- AppShell owns the page-level layout: top header, sidebar navigation, content container, and overall spacing
-- AppShell is also the place for the dashboard shell composition, not the place for metric-specific rendering
-- StatsCard owns only metric display: a single summary value, label, and optional trend or helper text
-- the dashboard home page can compose multiple StatsCard instances, but the cards themselves do not decide page layout
-- activity widgets should render recent items or empty-state placeholders without dictating shell structure
-- the sidebar should consume nav config data, not embed product logic or page layout concerns
+- AppShell owns the page layout: header, navigation, content region, spacing, and composition
+- AppShell does not own metric presentation logic
+- StatsCard owns only a single metric block: label, value, and optional helper text
+- the dashboard home page composes StatsCard instances as needed
+- recent activity panels own only the recent-item list and empty-state messaging
+- nav config owns the route labels and route map
 
-This keeps the design consistent with the code we have started: page composition belongs in the shell, and metric cards remain focused on the “what is this number?” question.
+This keeps responsibilities non-overlapping and matches the shell we are building.
 
-## Navigation and empty-state behavior
+## Responsive and mock-only behavior
 
-The shell should provide a clear investor-facing structure with recognizable labels such as Home, Portfolio, Deals, and Profile, even if the screens are placeholders for now. On mobile, the sidebar should collapse into a usable menu pattern rather than disappearing entirely.
+The dashboard must remain usable on mobile, tablet, and desktop widths. On narrow screens, the nav should collapse into a mobile pattern rather than hiding the route structure entirely.
 
-The page content should be intentionally transparent about missing data. Placeholder sections should say they are not live yet and should not imply that actual balances or activity are connected. This is especially important in the dashboard home page where metrics and recent activity are just scaffolding for future data integration.
+All summary numbers and activity entries are placeholder content. They should be clearly marked as mock or not yet connected so stakeholders do not confuse the shell with live financial data.
 
-## Scope boundaries
+## Out of scope
 
-In this sprint, we are deliberately not building:
+This sprint does not include:
 
-- live market or portfolio data
-- auth flows or user-account management
-- document vaults, payments, or tax exports
-- advanced charting with time-series data
-- a deep fintech architecture beyond the dashboard shell
-
-We are only proving that the investor dashboard shell is navigable, readable, and responsive.
+- real Supabase queries
+- account balances or holdings
+- payment flows or document management
+- tax export tools
+- live charts or time-series analysis
+- user auth or permission UI
+- any product behavior that exceeds the dashboard shell
 
 ## Definition of done
 
-The dashboard is done for this sprint when:
+The shell is complete when:
 
-- the investor can open the dashboard home route
-- the header, nav, metrics, and activity regions are present in the shell
-- the mobile layout still permits navigation
-- the placeholder content is clearly labeled as non-live
-- the route and component responsibilities match the implementation
-- the dashboard reads like a shell for future investor tools, not a complete product
+- the dashboard home route loads in the browser
+- header, nav, metrics, and activity regions appear in the shell
+- the nav remains usable on narrow screens
+- the layout matches the app-shell composition model
+- metric display remains limited to StatsCard responsibilities
+- the dashboard reads as a placeholder product shell rather than a finished fintech app

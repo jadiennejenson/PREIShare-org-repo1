@@ -33,3 +33,41 @@ Child routes: index (home), `portfolio`, `deals`, `profile`
 
 ---
 
+# Dashboard IA
+
+The investor dashboard is a routed section under `/dashboard`. The IA is intentionally simple so the shell can prove navigation and layout before deeper product features are added.
+
+## Route structure
+
+- `/dashboard` — home dashboard shell with summary metrics and recent activity
+- `/dashboard/portfolio` — placeholder section for portfolio content
+- `/dashboard/deals` — placeholder section for deal or opportunity content
+- `/dashboard/profile` — placeholder section for investor profile or account context
+
+These routes are not intended to be fully featured in this sprint. They simply prove that the app shell can switch between sections and keep a consistent frame around page content.
+
+## Navigation model
+
+The sidebar should render navigation from a central config rather than a hardcoded component list. Labels and route targets belong in one data source, such as NavItems or navConfig. The sidebar is a renderer, not the canonical source of truth.
+
+This keeps the UI consistent and avoids drift between label text, route names, and future navigation changes.
+
+## Shell behavior
+
+The dashboard shell is the persistent frame around all route content:
+
+- header for branding and user context
+- sidebar or mobile nav
+- main content region
+- consistent spacing and page structure
+
+This shell is shared by every dashboard route. Route content is inserted inside it rather than replacing the frame itself.
+
+## Mock-only content decisions
+
+The home page uses placeholder metric cards and a recent activity list. The content should signal that the data is still mock or not yet connected. The dashboard shell must not imply that live portfolio values or trade flows are already available.
+
+## Scope alignment
+
+This IA is intentionally limited to route proofing, layout stability, and placeholder messaging. It does not include auth flows, payments, or live investment data. The current shell should read like a stable foundation for future investor tools, not a complete product experience.
+
