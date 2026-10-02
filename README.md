@@ -71,6 +71,24 @@ export default defineConfig([
   },
 ])
 ```
+# PREIshare Investor Dashboard Shell
+
+This project contains the initial PREIshare investor dashboard shell. It is set up as a lightweight React + TanStack app with a root route and a placeholder home page, intended for routing and shell proofing before deeper investor screens are added.
+
+## Install
+
+```bash
+npm install
+```
+
+## Run locally
+
+```bash
+npm run dev
+```
+
+The app is intended to be used as a development shell for the investor dashboard and will expose the local Vite dev server in the terminal output.
+
 TanStack Start + TypeScript starter for the PREIshare investor dashboard (Sprint 3).
 
 ## Setup
