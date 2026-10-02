@@ -1,6 +1,9 @@
-// --- app.config.ts (shape may vary slightly by starter version) ---
-import { defineConfig } from '@tanstack/react-start/config';
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  // Keep defaults from the official TanStack Start scaffold unless you have a reason to change them.
+  plugins: [react()],
+  server: {
+    port: 3000,
+  },
 });
