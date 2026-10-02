@@ -1,6 +1,6 @@
 // --- src/routes/index.tsx ---
 import { createFileRoute } from '@tanstack/react-router';
-import { Link } from 'react-router-dom'; // Ensure this import is present
+import { Link } from '@tanstack/react-router'; // Updated import
 
 export const Route = createFileRoute('/')({
   component: HomePage,
