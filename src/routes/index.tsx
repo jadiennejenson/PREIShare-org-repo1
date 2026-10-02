@@ -1,5 +1,6 @@
 // --- src/routes/index.tsx ---
 import { createFileRoute } from '@tanstack/react-router';
+import { Link } from 'react-router-dom'; // Ensure this import is present
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -45,6 +46,11 @@ function HomePage() {
           <li>Member profile record reviewed (mock)</li>
         </ul>
       </section>
+
+      {/* Add a link to the dashboard */}
+      <Link to="/dashboard" className="mt-4 inline-block text-sm font-medium text-blue-600 hover:underline">
+        Go to Dashboard
+      </Link>
     </main>
   );
 }
