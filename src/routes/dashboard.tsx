@@ -1,4 +1,5 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router'
+import AppShell from '../components/AppShell' // added
 
 export const Route = createFileRoute('/dashboard')({
   component: DashboardLayout,
@@ -6,10 +7,13 @@ export const Route = createFileRoute('/dashboard')({
 
 function DashboardLayout() {
   return (
-    <div data-area="dashboard-layout">
-      <p>PREIshare investor dashboard layout (shell comes next)</p>
-      {/* Child routes render here */}
-      <Outlet />
-    </div>
+    // wrap layout content in the shared shell so child routes render inside it
+    <AppShell>
+      <div data-area="dashboard-layout">
+        <p>PREIshare investor dashboard layout</p>
+        {/* Child routes render here */}
+        <Outlet />
+      </div>
+    </AppShell>
   )
 }
