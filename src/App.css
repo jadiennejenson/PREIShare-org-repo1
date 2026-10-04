@@ -51,7 +51,7 @@
   display: flex;
   align-items: center;
   padding: 0 16px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
 }
 .app-body {
   display: flex;
@@ -59,8 +59,9 @@
 }
 .dashboard-sidebar {
   width: 220px;
-  border-right: 1px solid #eee;
+  border-right: 1px solid var(--border);
   padding: 16px;
+  background: #fafafa;
 }
 .app-main {
   flex: 1;

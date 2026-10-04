@@ -1,7 +1,8 @@
 :root {
-  --bg: #fff;
+  --bg: #ffffff;
   --text: #111;
   --muted: #666;
+  --border: #e6e6e6;
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -22,7 +23,7 @@ body,
 #root {
   height: 100%;
   margin: 0;
-  font-family: system-ui, Segoe UI, Roboto;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   background: var(--bg);
   color: var(--text);
 }

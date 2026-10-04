@@ -1,7 +1,5 @@
 import './App.css'
-import "./index.css";
-import './styles/layout.css'
-import './styles/dashboard.css'
+import './index.css';
 import { projects } from "./data/projects";
 import { countByStatus, formatDueDate, getProjectsByStatus } from "./utils/projectUtils";
 import { AppShell } from './components/layout/AppShell'
