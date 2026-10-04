@@ -1,32 +1,28 @@
 // src/components/layout/NavItems.tsx
 // Renders nav links from navConfig and marks the active route.
 
-import { Link, useRouterState } from '@tanstack/react-router';
 import { dashboardNavItems } from './navConfig';
 
 export function NavItems() {
-  const pathname = useRouterState({
-    select: (state) => state.location.pathname,
-  });
+  const pathname =
+    typeof window !== 'undefined' ? window.location.pathname : '/dashboard';
 
   return (
     <nav aria-label="Dashboard">
       <ul className="nav-list">
         {dashboardNavItems.map((item) => {
           const isActive =
-            item.path === '/dashboard'
-              ? pathname === '/dashboard' || pathname === '/dashboard/'
-              : pathname === item.path || pathname.startsWith(`${item.path}/`);
+            pathname === item.path || pathname.startsWith(item.path + '/');
 
           return (
             <li key={item.path}>
-              <Link
-                to={item.path}
+              <a
+                href={item.path}
                 className={isActive ? 'nav-link nav-link-active' : 'nav-link'}
                 aria-current={isActive ? 'page' : undefined}
               >
                 {item.label}
-              </Link>
+              </a>
             </li>
           );
         })}

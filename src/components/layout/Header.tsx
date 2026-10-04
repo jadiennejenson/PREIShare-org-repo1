@@ -6,12 +6,11 @@ type HeaderProps = {
   children?: ReactNode
 }
 
-/** Top bar: page title + optional actions / user slot. */
-export function Header({ title = 'Investor Dashboard', children }: HeaderProps) {
+export function Header({ title = 'PREIshare', children }: HeaderProps) {
   return (
-    <header className="dashboard-header">
-      <h1 className="header-title">{title}</h1>
-      <div className="header-actions">{children}</div>
+    <header className="app-header" role="banner">
+      <div className="header-left">{title}</div>
+      <div className="header-right">{children}</div>
     </header>
   )
 }
