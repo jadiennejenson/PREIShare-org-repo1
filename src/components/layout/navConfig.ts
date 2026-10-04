@@ -31,16 +31,18 @@ export const dashboardNavItems: NavItemConfig[] = [
 ];
 
 export function getPageTitle(pathname: string): string {
+  // Normalize pathname: ensure leading '/', remove trailing '/' unless root.
+  if (!pathname.startsWith('/')) pathname = `/${pathname}`;
+  if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
+
+  // Exact match first.
   const exact = dashboardNavItems.find((item) => item.path === pathname);
   if (exact) return exact.title;
 
   // Prefer the most specific matching path (longest prefix) for nested routes later.
   const prefixMatch = [...dashboardNavItems]
     .sort((a, b) => b.path.length - a.path.length)
-    .find(
-      (item) =>
-        item.path !== '/dashboard' && pathname.startsWith(`${item.path}/`),
-    );
+    .find((item) => item.path !== '/dashboard' && pathname.startsWith(item.path + '/'));
 
   return prefixMatch?.title ?? 'Dashboard';
 }
