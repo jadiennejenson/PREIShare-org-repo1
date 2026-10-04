@@ -8,26 +8,19 @@ export function NavItems() {
     typeof window !== 'undefined' ? window.location.pathname : '/dashboard';
 
   return (
-    <nav aria-label="Dashboard">
-      <ul className="nav-list">
-        {dashboardNavItems.map((item) => {
-          const isActive =
-            pathname === item.path || pathname.startsWith(item.path + '/');
-
-          return (
-            <li key={item.path}>
-              <a
-                href={item.path}
-                className={isActive ? 'nav-link nav-link-active' : 'nav-link'}
-                aria-current={isActive ? 'page' : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+    <ul className="nav-items">
+      {dashboardNavItems.map((item) => {
+        const isActive =
+          pathname === item.path || pathname.startsWith(item.path + '/');
+        return (
+          <li key={item.path}>
+            <a href={item.path} className={isActive ? 'active' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 

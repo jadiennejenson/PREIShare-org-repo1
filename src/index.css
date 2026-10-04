@@ -1,4 +1,8 @@
 :root {
+  --bg: #fff;
+  --text: #111;
+  --muted: #666;
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -13,6 +17,16 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  font-family: system-ui, Segoe UI, Roboto;
+  background: var(--bg);
+  color: var(--text);
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -23,7 +37,6 @@ a:hover {
 }
 
 body {
-  margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;

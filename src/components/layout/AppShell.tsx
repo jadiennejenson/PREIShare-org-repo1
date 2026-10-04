@@ -20,9 +20,7 @@ export function AppShell({ children }: AppShellProps) {
         <Sidebar>
           <NavItems />
         </Sidebar>
-        <main className="app-main" id="main-content">
-          {children}
-        </main>
+        <main className="app-main">{children}</main>
       </div>
     </div>
   )
