@@ -9,7 +9,6 @@ Source requirements: `docs/preishare-dashboard-requirements.md`.
 | --- | --- | --- |
 | `src/routes/__root.tsx` | (app root layout) | Existing shared root — do not replace casually |
 | `src/routes/index.tsx` | `/` | Existing marketing or app home |
-| _(add every route file you actually found)_ | | |
 
 ## Planned dashboard route tree
 
@@ -36,9 +35,9 @@ Source requirements: `docs/preishare-dashboard-requirements.md`.
 ## Navigation labels (for sidebar / mobile nav later)
 | Label | Path | Requirement link |
 | --- | --- | --- |
-| Overview | `/dashboard` | Investor home base / portfolio metrics entry |
-| Portfolio | `/dashboard/portfolio` | Deeper portfolio tools (placeholder) |
-| Activity | `/dashboard/activity` | Recent activity expansion (placeholder) |
+| Overview | `/dashboard` | docs/preishare-dashboard-requirements.md#overview-metrics |
+| Portfolio | `/dashboard/portfolio` | docs/preishare-dashboard-requirements.md#portfolio-management |
+| Activity | `/dashboard/activity` | docs/preishare-dashboard-requirements.md#activity-feed |
 
 ## Out of scope for this plan
 - Component prop designs and styling tokens (next architecture step)
@@ -51,4 +50,4 @@ Source requirements: `docs/preishare-dashboard-requirements.md`.
 - No unrelated existing routes were deleted during dashboard work.
 
 ## Open questions
-- _(List anything unclear from the starter tree or requirements brief.)_
+- Nothing unclear from the starter tree or requirements.
