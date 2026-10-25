@@ -1,80 +1,44 @@
-# PREIshare — Data model and RLS policy matrix
-
-## Purpose
-Design-only blueprint for sponsor auth and property listings.
-Step 6 migrations must follow this document; do not invent extra tables or open policies without updating this file first.
-
-## Source requirements
-Consumed from: `docs/sponsor-auth-requirements.md`
-
-## Actors and identities
-| Actor | How identity is established | Notes |
-|-------|----------------------------|-------|
-| Anonymous visitor | No Supabase session | Must not read or write sponsor properties |
-| Sponsor (authenticated) | Supabase Auth user; `auth.uid()` is their user id | May manage only rows they own |
-| Service role / server admin tasks | Secret service-role key on the server only | Not used from the browser; out of band for normal UI |
+# Data model and RLS matrix
 
 ## Tables
 
-### `profiles` (sponsor linkage)
-Links a Supabase Auth user to sponsor display data.
+### public.sponsors
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| id | uuid | PRIMARY KEY, REFERENCES auth.users(id) ON DELETE CASCADE | 1:1 with auth.users |
+| display_name | text | NOT NULL | Sponsor-facing display name |
+| email | text | NOT NULL, UNIQUE | Contact email for sponsor record |
+| created_at | timestamptz | NOT NULL DEFAULT now() | Audit timestamp |
 
-| Column | Type (intent) | Required | Notes |
-|--------|---------------|----------|-------|
-| id | uuid (PK, = auth.users.id) | yes | Same value as `auth.uid()` after signup/login |
-| display_name | text | yes | Shown in dashboard chrome |
-| created_at | timestamptz | yes | Default now() |
-
-### `properties` (listings owned by a sponsor)
-| Column | Type (intent) | Required | Notes |
-|--------|---------------|----------|-------|
-| id | uuid (PK) | yes | Generated default |
-| owner_id | uuid (FK → profiles.id or auth.users.id) | yes | **RLS hinge column** — must equal `auth.uid()` for owner policies |
-| title | text | yes | Listing title |
-| description | text | no | Longer copy |
-| city | text | no | Simple location field for listings |
-| status | text | yes | e.g. `draft` \| `published` (constrain in app or CHECK) |
-| created_at | timestamptz | yes | Default now() |
-| updated_at | timestamptz | yes | Updated on change |
-
-## RLS posture
-- Enable RLS on **every** table above before relying on the API.
-- No broad `USING (true)` policies for authenticated roles on `properties`.
-- Browser clients use the anon/authenticated key only; never the service role.
+### public.properties
+| Column | Type | Constraints | Notes |
+| --- | --- | --- | --- |
+| id | uuid | PRIMARY KEY, DEFAULT gen_random_uuid() | Unique property identifier |
+| sponsor_id | uuid | NOT NULL, REFERENCES public.sponsors(id) ON DELETE CASCADE | Owner linkage |
+| title | text | NOT NULL | Short listing title |
+| short_description | text | nullable | Summary text |
+| listing_url | text | nullable | Optional external listing URL |
+| status | text | NOT NULL DEFAULT 'draft', CHECK IN ('draft','published','archived') | Lifecycle state |
+| created_at | timestamptz | NOT NULL DEFAULT now() | Creation timestamp |
+| updated_at | timestamptz | NOT NULL DEFAULT now() | Update timestamp |
 
 ## RLS policy matrix
 
-| Table | Operation | Who | Rule (plain English) | Intended SQL shape (for Step 6) |
-|-------|-----------|-----|----------------------|----------------------------------|
-| profiles | SELECT | Authenticated sponsor | Can read own profile only | `id = auth.uid()` |
-| profiles | INSERT | Authenticated sponsor | Can create own profile row only | `WITH CHECK (id = auth.uid())` |
-| profiles | UPDATE | Authenticated sponsor | Can update own profile only | `id = auth.uid()` |
-| profiles | DELETE | — | Denied for sponsors in this sprint | No policy / no grant |
-| properties | SELECT | Authenticated sponsor | Can read only properties they own | `owner_id = auth.uid()` |
-| properties | INSERT | Authenticated sponsor | Can insert only if they set themselves as owner | `WITH CHECK (owner_id = auth.uid())` |
-| properties | UPDATE | Authenticated sponsor | Can update only owned rows | `owner_id = auth.uid()` |
-| properties | DELETE | Authenticated sponsor | Can delete only owned rows (or deny if requirements say soft-delete only) | `owner_id = auth.uid()` or no policy |
-| properties | ALL | Anonymous | No access | No policy for `anon` |
+### public.sponsors
+- `sponsors_select_own`: authenticated users can select only their own row where `id = auth.uid()`
+- `sponsors_update_own`: authenticated users can update only their own row where `id = auth.uid()` and `WITH CHECK (id = auth.uid())`
 
-## Requirement → design mapping
-| Requirement (from sponsor-auth-requirements) | Satisfied by |
-|-----------------------------------------------|--------------|
-| Sponsors must sign in before managing listings | Auth session required; RLS denies anon on `properties` |
-| A sponsor sees only their properties | `properties` SELECT policy: `owner_id = auth.uid()` |
-| A sponsor can create a listing they own | INSERT `WITH CHECK (owner_id = auth.uid())` + app sets `owner_id` from session |
-| Secrets stay off the client | Noted here; enforced by env + server clients (other steps)—matrix assumes authenticated role only in browser |
-| Listing fields for dashboard cards | `title`, `city`, `status`, `created_at` on `properties` |
+### public.properties
+- `properties_select_own`: authenticated users can select only rows where `sponsor_id = auth.uid()`
+- `properties_insert_own`: authenticated users can insert only rows where `sponsor_id = auth.uid()`
+- `properties_update_own`: authenticated users can update only rows where `sponsor_id = auth.uid()` and `WITH CHECK (sponsor_id = auth.uid())`
+- `properties_delete_own`: authenticated users can delete only rows where `sponsor_id = auth.uid()`
 
-## Out of scope this sprint
-- Public marketplace read of published listings (would need a separate, intentional SELECT policy).
-- Multi-sponsor / team ownership of one property.
-- Admin override UI (service role only on server, not via RLS for sponsors).
+## Review checklist
+- [x] RLS enabled on every sponsor-owned table
+- [x] No open `USING (true)` on sponsor/property data
+- [x] INSERT/UPDATE policies include `WITH CHECK` tied to `auth.uid()`
+- [x] Column list and foreign keys match the implemented migration
 
-## Open questions for review
-- [ ] Confirm DELETE vs soft-delete (`status = 'archived'`) with the team.
-- [ ] Confirm whether `profiles` row is created by trigger on signup or by first login app path.
-
-## Ready for Step 6 when
-- [ ] Every sponsor-facing action in the requirements maps to a matrix row.
-- [ ] `owner_id` (or equivalent) exists and is named consistently.
-- [ ] No policy grants all authenticated users access to all properties.
+## Policy fix note
+The review cycle captured a concrete fix: the original update policies were missing `WITH CHECK` constraints, and those were added to both `sponsors_update_own` and `properties_update_own` so ownership cannot be changed outside the authenticated user’s own record.
