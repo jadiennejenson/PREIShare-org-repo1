@@ -13,12 +13,12 @@ Status values: `pass` | `fail` | `not-run`
 
 | # | Check | How you verified | Status | Notes |
 |---|--------|------------------|--------|-------|
-| 1.1 | Browser-safe client (`src/lib/supabase.client.ts`) uses only public URL + anon key | Reviewed file contents; confirmed browser client reads only the public URL and anon key, with no secret value pasted | pass | Public URL + anon key only; secrets redacted |
-| 1.2 | Service-role / secret key used only in server module (`src/lib/supabase.server.ts`) or never used in this topic | Reviewed server-only boundary; confirmed service-role key is kept out of browser code and is not exposed in this checklist | pass | Server-only handling only; no secret values copied |
-| 1.3 | No raw secrets committed in source or checklist | Searched working tree and document for secret-like values; none were committed in this review | pass | No real key values recorded |
-| 1.4 | `.env.example` documents required vars without real values | Reviewed repo state for env documentation; no env example was present in the current branch for this topic | not-run | Required vars need explicit doc coverage before this can be marked pass |
+| 1.1 | Browser-safe client (`src/lib/supabase.client.ts`) uses only public URL + anon key | Reviewed repo state; the browser client file is not present in this branch, so the required split could not be verified | fail | No browser-safe client implementation exists in this branch |
+| 1.2 | Service-role / secret key used only in server module (`src/lib/supabase.server.ts`) or never used in this topic | Reviewed repo state; the server-only Supabase module is not present in this branch | fail | No server-only secret boundary exists here |
+| 1.3 | No raw secrets committed in source or checklist | Searched the checked files and surrounding source text for secret-like values; none were pasted into the checklist | pass | No real key values were recorded |
+| 1.4 | `.env.example` documents required vars without real values | Reviewed repo state; no `.env.example` file or env var documentation was found for this topic | fail | Required environment variables are not documented in this branch |
 
-**Section result:** pass
+**Section result:** fail
 
 ---
 
@@ -26,10 +26,10 @@ Status values: `pass` | `fail` | `not-run`
 
 | # | Check | How you verified | Status | Notes |
 |---|--------|------------------|--------|-------|
-| 2.1 | Unauthenticated visit to dashboard (or properties) redirects or blocks access | Route-level login/session verification was not executed in this branch | not-run | Needs a live browser run with a logged-out session |
-| 2.2 | Valid sponsor credentials reach an authenticated dashboard session | Login flow was not executed in this branch | not-run | Need live login against the real sponsor auth flow |
-| 2.3 | Invalid credentials do not grant dashboard access | Invalid-login flow was not executed in this branch | not-run | Need a real failed-login test |
-| 2.4 | Logout clears session; protected routes no longer load data as that user | Logout/session clearing was not executed in this branch | not-run | Need end-to-end logout verification |
+| 2.1 | Unauthenticated visit to dashboard (or properties) redirects or blocks access | No sponsor dashboard or auth flow was available to run in this branch | not-run | Live browser verification was not possible |
+| 2.2 | Valid sponsor credentials reach an authenticated dashboard session | No login flow was available to execute in the branch | not-run | Real login run was not possible |
+| 2.3 | Invalid credentials do not grant dashboard access | No invalid-login flow was available to run | not-run | Real failed-login run was not possible |
+| 2.4 | Logout clears session; protected routes no longer load data as that user | No logout flow or protected route was available in this branch | not-run | Real logout verification was not possible |
 
 **Section result:** not-run
 
@@ -39,9 +39,9 @@ Status values: `pass` | `fail` | `not-run`
 
 | # | Check | How you verified | Status | Notes |
 |---|--------|------------------|--------|-------|
-| 3.1 | Signed-in sponsor sees property list UI from `src/routes/dashboard/properties.tsx` | Properties list flow was not executed in this branch | not-run | Need a live logged-in property view |
-| 3.2 | List shows only rows owned by the current sponsor (per docs/data-model-and-rls-matrix.md) | Owner-scoped list validation was not executed against the matrix | not-run | Need real sponsor data with known ownership |
-| 3.3 | Empty state is safe (no error that leaks other tenants’ data) | Empty-state behavior was not exercised in the real app | not-run | Need real empty-state and filtered-list validation |
+| 3.1 | Signed-in sponsor sees property list UI from `src/routes/dashboard/properties.tsx` | No property list route or sponsor interface was available to run | not-run | Real list flow was not possible |
+| 3.2 | List shows only rows owned by the current sponsor (per docs/data-model-and-rls-matrix.md) | No live data set or owner-scoped route was available for validation | not-run | Needs a real sponsor-owned data set |
+| 3.3 | Empty state is safe (no error that leaks other tenants’ data) | No empty-state flow was available to execute | not-run | No real empty/list validation was possible |
 
 **Section result:** not-run
 
@@ -51,9 +51,9 @@ Status values: `pass` | `fail` | `not-run`
 
 | # | Check | How you verified | Status | Notes |
 |---|--------|------------------|--------|-------|
-| 4.1 | Create form on `src/routes/dashboard/properties.new.tsx` requires an authenticated session | Property create flow was not executed in this branch | not-run | Need auth-gated create route test |
-| 4.2 | Successful create inserts a row owned by the current sponsor | Create-as-owner flow was not executed | not-run | Need live create and ownership verification |
-| 4.3 | Create failure (validation or RLS) does not expose secret keys or raw DB internals in the UI | No create failure was exercised in the app | not-run | Need a failed submit path and error capture |
+| 4.1 | Create form on `src/routes/dashboard/properties.new.tsx` requires an authenticated session | No create route was available to run | not-run | Real session-gated create flow was not possible |
+| 4.2 | Successful create inserts a row owned by the current sponsor | No create flow was available to exercise | not-run | Real create-as-owner validation not possible |
+| 4.3 | Create failure (validation or RLS) does not expose secret keys or raw DB internals in the UI | No create failure path was available to test | not-run | No failed-submit validation could be run |
 
 **Section result:** not-run
 
@@ -63,8 +63,8 @@ Status values: `pass` | `fail` | `not-run`
 
 | # | Check | How you verified | Status | Notes |
 |---|--------|------------------|--------|-------|
-| 5.1 | Sponsor B cannot list Sponsor A’s properties in the UI | Cross-sponsor flow was not exercised because a second sponsor account was not available | not-run | Keep not-run until two sponsor accounts are available |
-| 5.2 | Direct read/update of another sponsor’s row is denied by RLS (UI and/or Supabase policy behavior) | Cross-sponsor RLS validation was not executed | not-run | Need second sponsor and known data setup |
+| 5.1 | Sponsor B cannot list Sponsor A’s properties in the UI | No second sponsor account or property list flow was available for testing | not-run | Cross-sponsor validation remains blocked by account setup |
+| 5.2 | Direct read/update of another sponsor’s row is denied by RLS (UI and/or Supabase policy behavior) | No live multi-sponsor data or policy test setup was available | not-run | Needs a second sponsor and known policies |
 
 **Section result:** not-run
 
@@ -74,19 +74,20 @@ Status values: `pass` | `fail` | `not-run`
 
 | Gap (checklist #) | What was wrong | Fix applied (files) | Re-test status |
 |-------------------|----------------|---------------------|----------------|
-| 1.4 | `.env.example` guidance was not explicitly validated in the current branch | Add and review the env var documentation for sponsor auth and Supabase usage | not-run |
-| 2.x, 3.x, 4.x | Login, logout, property list, and create flows were not executed end-to-end in this branch | Run real sponsor-auth and property flows against the app, verify owner-scoped results, and document outcomes | not-run |
-| 5.x | Cross-sponsor validation could not be completed without a second sponsor account | Provision second sponsor account and repeat the cross-sponsor checks | not-run |
+| 1.4 | Missing `.env.example` and required env documentation for sponsor auth / Supabase setup | No fix applied in this branch | fail |
+| 2.1-2.4 | Login, failed-login, and logout flows were not available for real browser verification | No fix applied in this branch | not-run |
+| 3.1-3.3 | Property list and owner-scoped RLS checks were not runnable in the current branch | No fix applied in this branch | not-run |
+| 4.1-4.3 | Property create flow and ownership validation were not present in the branch | No fix applied in this branch | not-run |
+| 5.1-5.2 | Cross-sponsor account setup was unavailable, so those checks could not be completed | No fix applied in this branch | not-run |
 
 ---
 
 ## 7. Residual risks (honest leftovers)
 
-- Secret hygiene was reviewed in the browser/server client split and no secret values were pasted; this is good, but the runtime auth and property flows still need live verification.
-- The branch does not yet have a complete end-to-end sponsor auth flow validated in-browser, so session gating and logout behavior remain unproven.
-- Property list/create checks remain not-run until real sponsor-owned rows and a live RLS setup can be exercised.
-- Cross-sponsor access checks remain not-run without a second sponsor account.
-- `.env.example` documentation is not yet fully validated in this branch.
+- The branch does not yet contain a complete sponsor-auth runtime, so login, logout, and route gating are still unverified.
+- The property list and create flows were not runnable in this branch, so owner-scoped RLS remains untested.
+- Cross-sponsor checks remain not-run because a second sponsor account was not available.
+- Secret hygiene was reviewed only to the extent possible: no real secret values were pasted, but the full client/server separation and `.env.example` documentation still need to be present before the environment review can be considered complete.
 
 ---
 
@@ -95,6 +96,6 @@ Status values: `pass` | `fail` | `not-run`
 **Ready to show stakeholders?** no
 
 **Summary (3–5 sentences):**  
-I reviewed the Supabase client/server hygiene and confirmed the browser client is kept to the public URL and anon key pattern without pasting any secrets. I did not complete live login, logout, property list, or property create testing in this branch, so those sections remain not-run. The owner-scoped RLS checks and cross-sponsor checks are also not-run until there are real sponsor accounts and routes in place. Secret-key hygiene is acceptable based on file review, but the application is not yet ready to show stakeholders because auth and property flows remain unverified end-to-end.
+I reviewed the repository state for secret hygiene and found no secret values pasted into the checklist or source review, but the required Supabase browser/server split and `.env.example` documentation are not present in this branch. I did not run live login, failed-login, logout, property list, create-as-owner, or cross-sponsor checks because the corresponding app flows and accounts were not available in the checked build. As a result, those sections remain not-run rather than pass/fail. The branch is not ready to show stakeholders because auth and RLS verification is incomplete and environment documentation is still missing.
 
 **Sign-off:** GitHub Copilot, 2026-10-27
