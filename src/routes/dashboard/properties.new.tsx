@@ -5,12 +5,8 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { createServerFn } from '@tanstack/react-start'
-import { getSupabaseServerClient } from '../lib/supabase.server'
-// Adjust import path to match your project layout if needed.
+import { getSupabaseServerClient } from '../../lib/supabase.server'
 
-// Server mutation: insert runs with the caller's session.
-// RLS WITH CHECK should enforce ownership (e.g. owner_id = auth.uid()).
-// Do NOT trust a client-supplied owner/sponsor id.
 export const createProperty = createServerFn({ method: 'POST' })
   .validator((data: { title: string; address: string; description?: string }) => data)
   .handler(async ({ data }) => {
@@ -31,15 +27,12 @@ export const createProperty = createServerFn({ method: 'POST' })
         title: data.title.trim(),
         address: data.address.trim(),
         description: data.description?.trim() ?? null,
-        // Ownership from the session — matches RLS WITH CHECK (auth.uid()).
-        // If your migration uses a different column name, match the matrix/migration.
-        owner_id: user.id,
+        sponsor_id: user.id,
       })
       .select('id')
       .single()
 
     if (error) {
-      // Surface the real failure — never pretend success when RLS or constraints reject.
       return { ok: false as const, error: error.message }
     }
 
@@ -74,7 +67,6 @@ function NewPropertyPage() {
       return
     }
 
-    // Only navigate away after a confirmed insert.
     navigate({ to: '/dashboard/properties' })
   }
 

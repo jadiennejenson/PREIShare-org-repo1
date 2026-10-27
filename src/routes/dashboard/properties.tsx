@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { Link, createFileRoute, redirect } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
 import { getSupabaseServerClient } from '~/lib/supabase.server'
 
@@ -94,6 +94,15 @@ function PropertiesPage() {
           ))}
         </ul>
       ) : null}
+
+      <div className="mt-4">
+        <Link
+          to="/dashboard/properties/new"
+          className="inline-block rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >
+          Add Property
+        </Link>
+      </div>
     </section>
   )
 }
