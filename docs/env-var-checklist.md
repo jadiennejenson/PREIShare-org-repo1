@@ -21,11 +21,11 @@ These are safe only because the browser is restricted by Supabase RLS. Do not as
 
 These values must stay on the server and must not be imported into browser bundles:
 
-- `SUPABASE_SERVICE_ROLE_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY` bypasses RLS and must only be read in server-only code.
 - `SUPABASE_URL`
 - Any database credentials or admin tokens
 
-Use server-only config in trusted execution environments such as server actions, loaders, middleware, or deployment secrets.
+Use server-only config in trusted execution environments such as server actions, loaders, middleware, or deployment secrets. Do not import `SUPABASE_SERVICE_ROLE_KEY` into browser or client-side modules.
 
 ## 4. Local setup
 
