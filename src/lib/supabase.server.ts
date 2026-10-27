@@ -1,8 +1,8 @@
 // src/lib/supabase.server.ts
 // Server-only module. Do not import this file from pure client components.
 // Match env names to your docs/env-var-checklist.md (.env.example).
-import { createServerClient } from '@supabase/ssr'
-import { createClient } from '@supabase/supabase-js'
+
+
 
 function requireEnv(name: string, value: string | undefined): string {
   if (!value) {
@@ -23,15 +23,15 @@ export function createSupabaseServerClient(cookieStore: {
     process.env.SUPABASE_ANON_KEY ?? process.env.VITE_SUPABASE_ANON_KEY
   )
 
-  return createServerClient(url, anonKey, {
+  return createClient(url, anonKey, {
     cookies: {
-      get(name) {
+      get(name: string) {
         return cookieStore.get(name)?.value
       },
-      set(name, value, options) {
+      set(name: string, value: string, options: Record<string, unknown> | undefined) {
         cookieStore.set?.(name, value, options)
       },
-      remove(name, options) {
+      remove(name: string, options: Record<string, unknown> | undefined) {
         cookieStore.remove?.(name, options)
       },
     },
@@ -58,8 +58,28 @@ export function createSupabaseServiceRoleClient() {
   })
 }
 
-const supabaseUrl = process.env.SUPABASE_URL // Ensure this is the public URL
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY // Ensure this is the anon key
+const supabaseUrl = requireEnv('SUPABASE_URL', process.env.SUPABASE_URL) // Ensure this is the public URL
+const supabaseAnonKey = requireEnv('SUPABASE_ANON_KEY', process.env.SUPABASE_ANON_KEY) // Ensure this is the anon key
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY // Should not be used in client
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
+const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+  },
+})
+
+function createClient(
+  url: string,
+  serviceRoleKey: string,
+  arg2: {
+    auth?: { persistSession: boolean; autoRefreshToken: boolean };
+    cookies?: {
+      get: (name: string) => string | undefined;
+      set?: (name: string, value: string, options?: Record<string, unknown>) => void;
+      remove?: (name: string, options?: Record<string, unknown>) => void;
+    };
+  }
+) {
+  throw new Error("Function not implemented.")
+}
