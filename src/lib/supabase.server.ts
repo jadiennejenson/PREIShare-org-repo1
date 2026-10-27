@@ -57,3 +57,9 @@ export function createSupabaseServiceRoleClient() {
     },
   })
 }
+
+const supabaseUrl = process.env.SUPABASE_URL // Ensure this is the public URL
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY // Ensure this is the anon key
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY // Should not be used in client
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
