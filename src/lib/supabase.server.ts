@@ -1,3 +1,5 @@
+import { createClient } from '@supabase/supabase-js'
+
 // src/lib/supabase.server.ts
 // Server-only module. Do not import this file from pure client components.
 // Match env names to your docs/env-var-checklist.md (.env.example).
@@ -58,28 +60,6 @@ export function createSupabaseServiceRoleClient() {
   })
 }
 
-const supabaseUrl = requireEnv('SUPABASE_URL', process.env.SUPABASE_URL) // Ensure this is the public URL
-const supabaseAnonKey = requireEnv('SUPABASE_ANON_KEY', process.env.SUPABASE_ANON_KEY) // Ensure this is the anon key
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY // Should not be used in client
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: false,
-    autoRefreshToken: false,
-  },
+export const supabase = createSupabaseServerClient({
+  get: () => undefined,
 })
-
-function createClient(
-  url: string,
-  serviceRoleKey: string,
-  arg2: {
-    auth?: { persistSession: boolean; autoRefreshToken: boolean };
-    cookies?: {
-      get: (name: string) => string | undefined;
-      set?: (name: string, value: string, options?: Record<string, unknown>) => void;
-      remove?: (name: string, options?: Record<string, unknown>) => void;
-    };
-  }
-) {
-  throw new Error("Function not implemented.")
-}
