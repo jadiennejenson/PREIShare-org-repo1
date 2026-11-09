@@ -60,6 +60,13 @@ export function createSupabaseServiceRoleClient() {
   })
 }
 
-export const supabase = createSupabaseServerClient({
-  get: () => undefined,
-})
+export const supabase = createClient(
+  requireEnv('SUPABASE_URL', process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL),
+  requireEnv('SUPABASE_ANON_KEY', process.env.SUPABASE_ANON_KEY ?? process.env.VITE_SUPABASE_ANON_KEY),
+  {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  }
+)
