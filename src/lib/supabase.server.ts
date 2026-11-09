@@ -17,6 +17,14 @@
  */
 import { createClient } from '@supabase/supabase-js'
 
+/**
+ * @module supabase.server
+ * Exports:
+ *   - createSupabaseServerClient: Session-aware Supabase client for server-side use (RLS, cookies)
+ *   - createSupabaseServiceRoleClient: Privileged Supabase client for admin/server jobs (bypasses RLS)
+ *   - supabase: Shared server-only Supabase client (no session persistence)
+ */
+
 // src/lib/supabase.server.ts
 // Server-only module. Do not import this file from pure client components.
 // Match env names to your docs/env-var-checklist.md (.env.example).
