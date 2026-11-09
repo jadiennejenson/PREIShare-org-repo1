@@ -1,3 +1,20 @@
+/**
+ * Server-side Supabase utilities for the application.
+ *
+ * This module provides the canonical way to initialize Supabase clients in server-only code.
+ * It validates required environment variables at runtime and exposes a session-aware client
+ * for cookie-based auth and RLS-protected access, as well as a privileged service-role client
+ * for trusted administrative operations that intentionally bypass row-level security.
+ *
+ * The shared `supabase` client exported from this module is intended for server-side use only
+ * and is configured with session persistence disabled to avoid unexpected client state leakage.
+ *
+ * @remarks Do not import this module into pure client components. It is designed for
+ * server environments and relies on runtime env vars such as `SUPABASE_URL`,
+ * `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`.
+ *
+ * @see docs/env-var-checklist.md
+ */
 import { createClient } from '@supabase/supabase-js'
 
 // src/lib/supabase.server.ts
