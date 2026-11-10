@@ -17,12 +17,10 @@ export const createListingSchema = z.object({
   postal_code: z.string().trim().min(3, 'Postal code is required').max(20),
   price: z.coerce.number().nonnegative('Price must be zero or greater'),
   status: listingStatusSchema.default('draft'),
-  image_url: z.string().trim().optional().default(''), // New field for image URL
 })
 
 export const updateListingSchema = createListingSchema.partial().extend({
   id: z.string().uuid('Listing id must be a valid UUID'),
-  image_url: z.string().trim().optional().default(''), // New field for image URL
 })
 
 export type CreateListingInput = z.infer<typeof createListingSchema>
