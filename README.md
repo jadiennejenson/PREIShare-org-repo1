@@ -1,12 +1,20 @@
 # PREIshare Investor Dashboard Shell
 
-TanStack Start + TypeScript starter for the PREIshare investor dashboard (Sprint 3).
+This project scaffolds the PREIshare investor dashboard shell with TanStack Start and TypeScript at the repo root.
 
-## Setup
-1. Install Node.js LTS if needed.
-2. From the project root, run: `npm install`
-3. Start the dev server: `npm run dev`
-4. Open the local URL printed in the terminal.
+## Install
+
+```bash
+npm install
+```
+
+## Run locally
+
+```bash
+npm run dev
+```
+
+Then open the local app in your browser at `http://localhost:3000`.
 
 ## Project notes
 - Planning docs live in `docs/` (information architecture and component plan).
