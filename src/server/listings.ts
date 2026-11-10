@@ -7,7 +7,6 @@ import {
   type CreateListingInput,
   type UpdateListingInput,
 } from '~/lib/listings/schema'
-import { z } from 'zod'
 
 export type ListingRow = {
   id: string
@@ -57,13 +56,7 @@ export const listMyListings = createServerFn({ method: 'GET' }).handler(
 
 /** Action: create a listing owned by the session user — never trust body.sponsor_id. */
 export const createListing = createServerFn({ method: 'POST' })
-  .validator((input: unknown) => {
-    try {
-      return createListingSchema.parse(input)
-    } catch (error) {
-      return { ok: false, error: 'Validation failed', fieldErrors: error.errors }
-    }
-  })
+  .validator((input: unknown) => createListingSchema.parse(input))
   .handler(async ({ data }): Promise<ListingMutationResult> => {
     const user = await requireSessionUser()
     if (!user) {
@@ -94,13 +87,7 @@ export const createListing = createServerFn({ method: 'POST' })
 
 /** Action: update only if the row is visible under RLS for this sponsor. */
 export const updateListing = createServerFn({ method: 'POST' })
-  .validator((input: unknown) => {
-    try {
-      return updateListingSchema.parse(input)
-    } catch (error) {
-      return { ok: false, error: 'Validation failed', fieldErrors: error.errors }
-    }
-  })
+  .validator((input: unknown) => updateListingSchema.parse(input))
   .handler(async ({ data }): Promise<ListingMutationResult> => {
     const user = await requireSessionUser()
     if (!user) {
