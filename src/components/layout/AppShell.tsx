@@ -5,22 +5,25 @@ import { Sidebar } from './Sidebar'
 import { NavItems } from './NavItems'
 
 type AppShellProps = {
-  children?: ReactNode
+  title?: string
+  children: ReactNode
 }
 
 /**
  * Shared investor chrome: sidebar + header + main content region.
  * Child routes render inside `children` (wired from the dashboard layout route).
  */
-export function AppShell({ children }: AppShellProps) {
+export function AppShell({ title = 'Investor Dashboard', children }: AppShellProps) {
   return (
     <div className="app-shell">
-      <Header />
-      <div className="app-body">
-        <Sidebar>
-          <NavItems />
-        </Sidebar>
-        <main className="app-main">{children}</main>
+      <Sidebar>
+        <NavItems />
+      </Sidebar>
+      <div className="app-shell-main-column">
+        <Header title={title} />
+        <main className="app-shell-content" id="main-content">
+          {children}
+        </main>
       </div>
     </div>
   )
