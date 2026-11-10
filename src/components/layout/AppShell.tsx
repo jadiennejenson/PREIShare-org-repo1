@@ -1,11 +1,12 @@
 // src/components/layout/AppShell.tsx
 import type { ReactNode } from 'react'
-import { Header } from './Header'
 import { Sidebar } from './Sidebar'
-import { NavItems } from './NavItems'
+import { Header } from './Header'
 
 type AppShellProps = {
   title?: string
+  user?: unknown
+  onSignOut?: () => void | Promise<void>
   children: ReactNode
 }
 
@@ -13,12 +14,15 @@ type AppShellProps = {
  * Shared investor chrome: sidebar + header + main content region.
  * Child routes render inside `children` (wired from the dashboard layout route).
  */
-export function AppShell({ title = 'Investor Dashboard', children }: AppShellProps) {
+export function AppShell({
+  title = 'Investor Dashboard',
+  user: _user,
+  onSignOut: _onSignOut,
+  children,
+}: AppShellProps) {
   return (
     <div className="app-shell">
-      <Sidebar>
-        <NavItems />
-      </Sidebar>
+      <Sidebar />
       <div className="app-shell-main-column">
         <Header title={title} />
         <main className="app-shell-content" id="main-content">
