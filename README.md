@@ -1,6 +1,6 @@
 # PREIshare Investor Dashboard Shell
 
-This project contains the initial PREIshare investor dashboard shell. It is intentionally a mock-only route shell for the investor-facing dashboard and is meant to prove the app shell and route setup before deeper investment features are added.
+This project scaffolds the PREIshare investor dashboard shell with TanStack Start and TypeScript at the repo root.
 
 ## Install
 
@@ -14,4 +14,4 @@ npm install
 npm run dev
 ```
 
-Open the local URL shown in the terminal to view the dashboard shell.
+Then open the local app in your browser at `http://localhost:3000`.
