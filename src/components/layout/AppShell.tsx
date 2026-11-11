@@ -1,6 +1,6 @@
 // src/components/layout/AppShell.tsx
 import type { ReactNode } from 'react'
-import { Sidebar } from './Sidebar'
+import { Sidebar } from '../dashboard/Sidebar'
 import { Header } from './Header'
 
 type AppShellProps = {
