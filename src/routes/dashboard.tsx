@@ -4,7 +4,7 @@ import { createSupabaseServerClient } from '../lib/supabase.server'
 import { createBrowserSupabaseClient } from '../lib/supabase.client'
 import { AppShell } from '../components/layout/AppShell'
 
-export const Route = createFileRoute('/dashboard')({
+export const Route = createFileRoute()({
   beforeLoad: async () => {
     const supabase = supabaseServerClient()
     const {
