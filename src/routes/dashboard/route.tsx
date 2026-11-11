@@ -1,32 +1,23 @@
-import { Outlet, createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
-import { AppShell } from '../../components/layout/AppShell'
-import { getUser, signOut } from '../../lib/auth/session'
+import { Outlet, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard')({
-  beforeLoad: async () => {
-    const user = await getUser()
-
-    if (!user) {
-      throw redirect({ to: '/auth/login' })
-    }
-
-    return { user }
-  },
-  component: DashboardRoute,
+  component: DashboardLayout,
 })
 
-function DashboardRoute() {
-  const navigate = useNavigate()
-  const { user } = Route.useRouteContext()
-
-  async function handleSignOut() {
-    await signOut()
-    navigate({ to: '/auth/login' })
-  }
-
+function DashboardLayout() {
   return (
-    <AppShell title="Investor Dashboard" user={user} onSignOut={handleSignOut}>
-      <Outlet />
-    </AppShell>
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      <header className="border-b border-slate-200 bg-white px-4 py-3">
+        <p className="text-sm font-medium tracking-wide text-slate-500">
+          PREIshare
+        </p>
+        <h1 className="text-lg font-semibold">Investor Dashboard</h1>
+      </header>
+      <main className="p-4">
+        {/* Child routes (like index) render inside Outlet */}
+        <Outlet />
+      </main>
+    </div>
   )
 }
+

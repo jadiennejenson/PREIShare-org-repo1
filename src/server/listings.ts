@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getSupabaseServerClient } from '~/lib/supabase/server'
+import { getSupabaseServerClient } from '../lib/supabase/server'
 import { requireSessionUser } from '~/lib/auth/session'
 import {
   createListingSchema,
