@@ -4,7 +4,7 @@ import { Link } from '@tanstack/react-router'
 
 const navItems = [
   { label: 'Dashboard', to: '/dashboard' },
-  // Keep this list identical to Sidebar
+  { label: 'Listings', to: '/dashboard/listings' },
 ]
 
 export function MobileNav() {

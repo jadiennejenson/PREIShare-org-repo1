@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router'
 
 const navItems = [
   { label: 'Dashboard', to: '/dashboard' },
-  // Add other items exactly as listed in your routing plan
+  { label: 'Listings', to: '/dashboard/listings' },
 ]
 
 export function Sidebar() {
