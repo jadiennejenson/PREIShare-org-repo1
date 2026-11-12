@@ -13,7 +13,12 @@ export const getSupabaseBrowser = (): SupabaseClient => {
       )
     }
 
-    supabaseBrowserInstance = createClient(supabaseUrl, supabaseAnonKey)
+    supabaseBrowserInstance = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    })
   }
 
   return supabaseBrowserInstance
