@@ -1,22 +1,30 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ListingCard } from '~/components/listings/ListingCard'
-// Import the real list loader/action from earlier step, e.g.:
-// import { listMyListings } from '~/server/listings'
+import { listMyListings } from '~/server/listings'
 
 export const Route = createFileRoute('/dashboard/listings/')({
-  // loader should call listMyListings (server) for the signed-in sponsor
+  loader: async () => {
+    return listMyListings()
+  },
   component: ListingsIndexPage,
 })
 
 function ListingsIndexPage() {
-  // Read loader data from the route.
-  // Handle: loading (if applicable), error, empty array, and success list.
-  const listings: Array<{
-    id: string
-    title: string
-    city: string
-    status: string
-  }> = [] // replace with loader data
+  const result = Route.useLoaderData()
+
+  if (!result || result.ok === false) {
+    return (
+      <section aria-labelledby="listings-heading">
+        <h1 id="listings-heading">Your property listings</h1>
+        <p role="alert">
+          {result?.error ?? 'Could not load your listings right now.'}
+        </p>
+        <Link to="/dashboard/listings/new">Add listing</Link>
+      </section>
+    )
+  }
+
+  const listings = result.listings
 
   if (listings.length === 0) {
     return (

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { ListingForm } from '~/components/listings/ListingForm'
-// import { createListing } from '~/server/listings'
+import { createListing } from '~/server/listings'
 
 export const Route = createFileRoute('/dashboard/listings/new')({
   component: NewListingPage,
@@ -21,11 +21,20 @@ function NewListingPage() {
     setIsSubmitting(true)
 
     try {
-      // Call createListing server function with validated values.
-      // On success: navigate({ to: '/dashboard/listings' })
-      // On failure: setErrorMessage(result.error)
-      void values
-      await Promise.resolve()
+      const result = await createListing({
+        title: values.title,
+        city: values.city,
+        description: values.description,
+      })
+
+      if (!result.ok) {
+        const fieldErrors = result.fieldErrors
+          ? Object.values(result.fieldErrors).flat().join(' ')
+          : ''
+        setErrorMessage(fieldErrors || result.error || 'Could not create listing.')
+        return
+      }
+
       navigate({ to: '/dashboard/listings' })
     } catch (error) {
       setErrorMessage(
