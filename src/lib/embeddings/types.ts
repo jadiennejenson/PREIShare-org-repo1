@@ -1,0 +1,33 @@
+/** Must match the vector column size in your pgvector schema. */
+export const EMBEDDING_DIMENSIONS = 1536;
+
+/** Text fields from a PREIshare property used to build one embedding. */
+export type PropertyEmbeddingInput = {
+  title: string;
+  description: string;
+  /** Optional location phrase if your data model includes it in the embedded text. */
+  locationSummary?: string;
+};
+
+export type EmbeddingSuccess = {
+  embedding: number[];
+  /** Provider/model id for handoff notes (not required for search math). */
+  model: string;
+  dimensions: number;
+};
+
+export type EmbeddingErrorCode =
+  | 'EMPTY_INPUT'
+  | 'MISSING_API_KEY'
+  | 'PROVIDER_ERROR'
+  | 'DIMENSION_MISMATCH';
+
+export type EmbeddingFailure = {
+  ok: false;
+  code: EmbeddingErrorCode;
+  message: string;
+};
+
+export type EmbeddingResult =
+  | ({ ok: true } & EmbeddingSuccess)
+  | EmbeddingFailure;
