@@ -89,23 +89,21 @@ async function main() {
       );
     }
 
-    const { error } = await supabase
-      .from('properties')
-      .upsert(
-        {
-          id: property.id,
-          title: property.title,
-          description: property.description,
-          city: property.city,
-          state: property.state,
-          property_type: property.property_type,
-          bedrooms: property.bedrooms,
-          bathrooms: property.bathrooms,
-          price: property.price,
-          embedding: embeddingResult.embedding,
-        },
-        { onConflict: 'id' }
-      );
+    const { error } = await supabase.from('properties').upsert(
+      {
+        id: property.id,
+        title: property.title,
+        description: property.description,
+        city: property.city,
+        state: property.state,
+        property_type: property.property_type,
+        bedrooms: property.bedrooms,
+        bathrooms: property.bathrooms,
+        price: property.price,
+        embedding: embeddingResult.embedding,
+      },
+      { onConflict: 'id' }
+    );
 
     if (error) {
       console.error(`Failed to seed ${property.id}:`, error.message);
