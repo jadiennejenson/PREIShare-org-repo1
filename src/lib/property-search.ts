@@ -1,8 +1,8 @@
 // Scaffold shape — wire to YOUR Supabase client and generateEmbedding export.
 
-import { generateEmbedding } from './embeddings/generate';
-import type { EmbeddingVector } from './embeddings/types';
-// import { supabase } from './supabase'; // use your existing client path
+import { supabase } from './supabase'; // existing server/browser client
+import { generatePropertyEmbedding } from './embeddings/generate';
+import { EMBEDDING_DIMENSIONS } from './embeddings/types';
 
 export type PropertyMatch = {
   id: string;
@@ -21,10 +21,23 @@ export async function searchPropertiesByText(
     return [];
   }
 
-  const embedding: EmbeddingVector = await generateEmbedding(trimmed);
+  const embeddingResult = await generatePropertyEmbedding({
+    title: trimmed,
+    description: trimmed,
+  });
+
+  if (!embeddingResult.ok) {
+    throw new Error(`Failed to generate embedding: ${embeddingResult.message}`);
+  }
+
+  if (embeddingResult.embedding.length !== EMBEDDING_DIMENSIONS) {
+    throw new Error(
+      `Embedding length mismatch: expected ${EMBEDDING_DIMENSIONS}, got ${embeddingResult.embedding.length}`
+    );
+  }
 
   const { data, error } = await supabase.rpc('match_properties', {
-    query_embedding: embedding,
+    query_embedding: embeddingResult.embedding,
     match_count: matchCount,
   });
 
