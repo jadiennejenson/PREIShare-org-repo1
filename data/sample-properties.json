@@ -32,6 +32,39 @@
       "bedrooms": 4,
       "bathrooms": 3,
       "price": 575000
+    },
+    {
+      "id": "sample-river-retreat-04",
+      "title": "Modern riverfront retreat with dock access",
+      "description": "Contemporary home on a quiet river bend with a private dock, large deck, and strong appeal for outdoor lovers. Popular with travelers seeking nature and recreation without giving up comfort.",
+      "city": "Stillwater",
+      "state": "MN",
+      "property_type": "house",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "price": 640000
+    },
+    {
+      "id": "sample-condo-urban-05",
+      "title": "Walkable condo near cafes and transit",
+      "description": "Light-filled condo in a mixed-use neighborhood with cafés, grocery stores, and transit all within a short walk. Attractive to renters wanting convenience, low maintenance, and easy access to downtown.",
+      "city": "St. Paul",
+      "state": "MN",
+      "property_type": "condo",
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "price": 465000
+    },
+    {
+      "id": "sample-farmhouse-rural-06",
+      "title": "Rural farmhouse with acreage and workshop",
+      "description": "Classic farmhouse set on a larger lot with a detached workshop, open fields, and room for gardening. Best suited to buyers who value privacy, land, and a slower-paced lifestyle over walkable city access.",
+      "city": "Red Wing",
+      "state": "MN",
+      "property_type": "farmhouse",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "price": 580000
     }
   ]
 }
