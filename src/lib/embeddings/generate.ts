@@ -71,7 +71,7 @@ export async function generatePropertyEmbedding(
     return {
       ok: true,
       embedding,
-      model: process.env.EMBEDDING_MODEL ?? 'default-embedding-model',
+      model: process.env.EMBEDDING_MODEL ?? 'text-embedding-3-small',
       dimensions: embedding.length,
     };
   } catch (err) {
@@ -82,10 +82,41 @@ export async function generatePropertyEmbedding(
 
 /** Internal helper — keep provider details out of the public export surface. */
 async function callEmbeddingProvider(
-  _text: string,
-  _apiKey: string
+  text: string,
+  apiKey: string
 ): Promise<number[]> {
-  // Replace with real provider integration in the agent implementation.
-  // Must return number[EMBEDDING_DIMENSIONS].
-  throw new Error('callEmbeddingProvider not implemented');
+  const model = process.env.EMBEDDING_MODEL ?? 'text-embedding-3-small';
+
+  const response = await fetch('https://api.openai.com/v1/embeddings', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      input: text,
+      model,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(
+      `Embedding provider error: ${response.status} ${errorText}`.trim()
+    );
+  }
+
+  const payload = (await response.json()) as {
+    data?: Array<{ embedding?: number[] }>;
+  };
+
+  const embedding = payload.data?.[0]?.embedding;
+
+  if (!Array.isArray(embedding) || embedding.length !== EMBEDDING_DIMENSIONS) {
+    throw new Error(
+      `Embedding provider returned ${Array.isArray(embedding) ? embedding.length : 'invalid'} values; expected ${EMBEDDING_DIMENSIONS}.`
+    );
+  }
+
+  return embedding;
 }
