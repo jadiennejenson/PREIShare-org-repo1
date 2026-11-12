@@ -21,7 +21,7 @@ This session cannot produce live PASS/FAIL evidence because the app and database
 | --- | --- | --- |
 | Sample properties present | BLOCKED | No seeded database query was run in this session. |
 | Embeddings non-null for all samples | BLOCKED | No database query was run against the seeded rows. |
-| Seed script re-runnable without breaking search | BLOCKED | No live run performed; no furniture run logs available. |
+| Seed script re-runnable without breaking search | BLOCKED | No local run performed. |
 
 ## Query results (semantic)
 | # | Query | Top 3 results (title or id) | Sensible neighbors? | Notes |
@@ -45,13 +45,23 @@ This session cannot produce live PASS/FAIL evidence because the app and database
 | Very short query | Stable response | BLOCKED | BLOCKED |
 
 ## Refine cycle (required)
-- Failing or weak example (query + bad ranking or error): BLOCKED; no live app run available to confirm a bad ranking
-- Suspected layer (seed data / embedding text / SQL distance / helper / API / UI): BLOCKED; no live run available to isolate the cause
-- Change made (files touched): NO CHANGE; this was a documentation-only update because the app and DB were unavailable
+- Failing or weak example (query + bad ranking or error): Query: “quiet cabin near water with good rental upside”. If a downtown loft or rural farmhouse ranks above the lakefront cabin, the ranking is weak.
+- Suspected layer (seed data / embedding text / SQL distance / helper / API / UI): Likely seed or embedding-input mismatch first; check whether the embedding text uses title + description + location and whether the vector distance operator matches the intended similarity choice.
+- Change made (files touched): NO CHANGE yet; this is a documentation-only update because the app and DB were unavailable
 - Re-test result: BLOCKED
 - Keep or revert decision: KEEP AS DOCUMENTATION ONLY until a live verification run is available
 
-## Requirements traceability
+## Local re-test plan (must be run on a real machine)
+1. Install deps: `npm install`
+2. Copy env values and confirm the app can start with `npm run dev`
+3. Run the seed script with the Supabase server client and the embedding helper
+4. Confirm row count in the database and count null embeddings
+5. Query the API or UI with the three semantic prompts above
+6. Record the top-3 titles or ids and mark YES if the neighbors are semantically sensible
+7. Repeat the paraphrase query and compare to exact keyword results
+8. If the ranking is weak, adjust one factor only: seed text, embedding input, distance usage, or limit, then re-test
+
+## Requirement traceability
 | Requirement / success criterion | Met? | Evidence |
 | --- | --- | --- |
 | Sample properties exist with description text and stored embedding vectors | BLOCKED | No database verification was possible in this session. |
