@@ -20,8 +20,8 @@ This session cannot produce live PASS/FAIL evidence because the app and database
 | Check | Result | Notes |
 | --- | --- | --- |
 | Sample properties present | BLOCKED | No seeded database query was run in this session. |
-| Embeddings non-null for all samples | BLOCKED | No database query was run against the seeded rows. |
-| Seed script re-runnable without breaking search | BLOCKED | No local run performed. |
+| Embeddings non-null for all samples | BLOCKED | No database query was run against seeded rows. |
+| Seed script re-runnable without breaking search | BLOCKED | No local run was performed. |
 
 ## Query results (semantic)
 | # | Query | Top 3 results (title or id) | Sensible neighbors? | Notes |
@@ -47,7 +47,7 @@ This session cannot produce live PASS/FAIL evidence because the app and database
 ## Refine cycle (required)
 - Failing or weak example (query + bad ranking or error): Query: “quiet cabin near water with good rental upside”. If a downtown loft or rural farmhouse ranks above the lakefront cabin, the ranking is weak.
 - Suspected layer (seed data / embedding text / SQL distance / helper / API / UI): Likely seed or embedding-input mismatch first; check whether the embedding text uses title + description + location and whether the vector distance operator matches the intended similarity choice.
-- Change made (files touched): NO CHANGE yet; this is a documentation-only update because the app and DB were unavailable
+- Change made (files touched): NO CHANGE yet; this was a documentation-only update because the app and database were unavailable
 - Re-test result: BLOCKED
 - Keep or revert decision: KEEP AS DOCUMENTATION ONLY until a live verification run is available
 
