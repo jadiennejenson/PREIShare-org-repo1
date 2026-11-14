@@ -1,7 +1,7 @@
 import { json } from '@tanstack/react-start';
 import { createAPIFileRoute } from '@tanstack/react-start/api';
 
-import { searchPropertiesByText } from '../../lib/property-search';
+import { searchPropertiesByText } from '../../../lib/property-search';
 
 export const APIRoute = createAPIFileRoute('/api/properties/search')({
   POST: async ({ request }) => {
