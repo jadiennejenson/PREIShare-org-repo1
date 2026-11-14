@@ -7,6 +7,9 @@ The team split auth and data concerns intentionally:
 - `sponsors` and `properties` are protected by Postgres Row-Level Security and ownership checks.
 - Browser code uses only the public URL and anon key; the service-role secret is loaded only in server-only code paths.
 - Environment values are documented in `.env.example` and `docs/env-var-checklist.md`, and real secrets are not committed.
+- Supabase access is separated into:
+  - `src/lib/supabase.client.ts` for browser-safe public access
+  - `src/lib/supabase.server.ts` for server-only secret access
 
 ## Source documents
 | Doc | Path | Purpose |
