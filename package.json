@@ -8,6 +8,7 @@
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
     "@tanstack/react-router": "^1.130.0",
     "@tanstack/react-start": "^1.130.0",
     "react": "^19.0.0",

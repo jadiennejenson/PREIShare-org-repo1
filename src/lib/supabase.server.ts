@@ -15,7 +15,7 @@
  *
  * @see docs/env-var-checklist.md
  */
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 
 /**
  * @module supabase.server
@@ -95,3 +95,27 @@ export const supabase = createClient(
     },
   }
 )
+
+function getServerEnv(name: string): string {
+  const value =
+    typeof process !== 'undefined' ? process.env?.[name] : undefined;
+
+  if (!value) {
+    throw new Error(`Missing ${name} in server environment.`);
+  }
+
+  return value;
+}
+
+export function createSupabaseServerClient() {
+  const supabaseUrl = getServerEnv('SUPABASE_URL');
+  const serviceRoleKey = getServerEnv('SUPABASE_SERVICE_ROLE_KEY');
+
+  return createClient(supabaseUrl, serviceRoleKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+    },
+  });
+}
