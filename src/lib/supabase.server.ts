@@ -39,11 +39,7 @@ function requireEnv(name: string, value: string | undefined): string {
 }
 
 /** Session-aware server client for sponsor auth + RLS (uses anon key + cookies). */
-export function createSupabaseServerClient(cookieStore: {
-  get: (key: string) => { value: string } | undefined
-  set?: (key: string, value: string, options?: Record<string, unknown>) => void
-  remove?: (key: string, options?: Record<string, unknown>) => void
-}) {
+export function createSupabaseServerClient() {
   const url = requireEnv('SUPABASE_URL', process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL)
   const anonKey = requireEnv(
     'SUPABASE_ANON_KEY',
@@ -51,16 +47,10 @@ export function createSupabaseServerClient(cookieStore: {
   )
 
   return createClient(url, anonKey, {
-    cookies: {
-      get(name: string) {
-        return cookieStore.get(name)?.value
-      },
-      set(name: string, value: string, options: Record<string, unknown> | undefined) {
-        cookieStore.set?.(name, value, options)
-      },
-      remove(name: string, options: Record<string, unknown> | undefined) {
-        cookieStore.remove?.(name, options)
-      },
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
     },
   })
 }
@@ -81,6 +71,7 @@ export function createSupabaseServiceRoleClient() {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
+      detectSessionInUrl: false,
     },
   })
 }
@@ -96,26 +87,4 @@ export const supabase = createClient(
   }
 )
 
-function getServerEnv(name: string): string {
-  const value =
-    typeof process !== 'undefined' ? process.env?.[name] : undefined;
-
-  if (!value) {
-    throw new Error(`Missing ${name} in server environment.`);
-  }
-
-  return value;
-}
-
-export function createSupabaseServerClient() {
-  const supabaseUrl = getServerEnv('SUPABASE_URL');
-  const serviceRoleKey = getServerEnv('SUPABASE_SERVICE_ROLE_KEY');
-
-  return createClient(supabaseUrl, serviceRoleKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-      detectSessionInUrl: false,
-    },
-  });
-}
+// Removed duplicate getServerEnv and createSupabaseServerClient implementation.
