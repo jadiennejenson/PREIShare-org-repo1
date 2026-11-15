@@ -15,7 +15,7 @@
  *
  * @see docs/env-var-checklist.md
  */
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js'
 
 /**
  * @module supabase.server
@@ -28,8 +28,6 @@ import { createClient } from '@supabase/supabase-js';
 // src/lib/supabase.server.ts
 // Server-only module. Do not import this file from pure client components.
 // Match env names to your docs/env-var-checklist.md (.env.example).
-
-
 
 function requireEnv(name: string, value: string | undefined): string {
   if (!value) {
@@ -83,8 +81,7 @@ export const supabase = createClient(
     auth: {
       persistSession: false,
       autoRefreshToken: false,
+      detectSessionInUrl: false,
     },
   }
 )
-
-// Removed duplicate getServerEnv and createSupabaseServerClient implementation.
