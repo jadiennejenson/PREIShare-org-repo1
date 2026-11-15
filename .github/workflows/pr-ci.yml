@@ -16,6 +16,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: npm
 
       - name: Install dependencies
         run: npm install
@@ -25,3 +26,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Lint
+        run: npx eslint . --max-warnings=0
+
+      - name: Test
+        run: npx vitest run
