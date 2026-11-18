@@ -22,47 +22,27 @@ It does **not** deploy anything and does **not** replace human review.
 > Adjust step order only with a written reason. Typical rule: install before anything that needs `node_modules`; cheaper/faster checks (lint/typecheck) before slower tests/build when scripts allow.
 
 ## Commands / scripts (from inventory)
-| Stage       | Script or command (from project-ci-inventory) | Required on PR? |
-|-------------|-----------------------------------------------|-----------------|
-| Install     | e.g. `npm ci`                                 | Yes             |
-| Lint        | e.g. `npm run lint`                           | Yes if present  |
-| Typecheck   | e.g. `npm run typecheck` / `tsc --noEmit`     | Yes if present  |
-| Test        | e.g. `npm test`                               | Yes if present  |
-| Build       | e.g. `npm run build`                          | Yes             |
-
-Fill every cell from `docs/ci/project-ci-inventory.md`. If a script is missing, mark **gap** and do not invent a fake command.
-
-## Failure policy
-- Any required stage failing → the CI job fails (red X on the PR)
-- Do not add `continue-on-error: true` for required quality gates
-- Optional/experimental checks (if any) must be labeled optional and must not block understanding of required failures
-- Humans still decide merge; CI only reports whether automated gates passed
-
-## Caching intent
-- Cache dependency downloads (npm/pnpm/yarn cache) keyed on the lockfile so repeated PRs install faster
-- Do not cache build output across unrelated PRs in a way that hides freshness problems
-- Note: exact cache actions land in the workflow YAML later; here we only record the intent
-
-## Environment and secrets
-- Prefer checks that run with committed config and public env defaults
-- No production secrets in PR CI logs
-- If tests need env vars, list only non-secret placeholders or documented dummy values
-- Do not connect PR CI to production Supabase projects
-
-## Explicitly out of scope for this PR pipeline
-- Production or staging **deploy**
-- Live **Supabase** schema migrations or data mutations against shared/prod projects
-- Manual QA, product acceptance, and final merge approval (human review)
-- AI auto-merge or unattended approval of PRs
+| Stage       | Script or command (from `docs/ci/project-ci-inventory.md`) | Required on PR? |
+|-------------|-------------------------------------------------------------|-----------------|
+| Install     | `npm ci`                                                    | Yes             |
+| Lint        | `npm run lint`                                              | Yes if present  |
+| Typecheck   | **gap** — no typecheck script or confirmed standalone command | No              |
+| Test        | **gap** — no test script                                    | No              |
+| Build       | `npm run build`                                             | Yes             |
 
 ## Mapping back to PREIshare goals
-- Pain addressed: teammates no longer rely on memory to install/build/test locally before review
-- Inventory sources: list which inventory rows drove each required stage
-- Human boundary: CI is a consistent signal; reviewers still own judgment (and later AI review prompts support—not replace—that judgment)
+- **Pain addressed — reviewers cannot assume teammates ran the same checks:** The lockfile-backed `npm ci` install and `npm run build` build gates provide the baseline validation inventory rows identified for every PR.
+- **Pain addressed — quality checks are easy to omit locally:** `npm run lint` is required when the inventory confirms that script exists.
+- **Pain addressed — the repository lacks reliable automated test coverage:** The `Test` stage is a documented gap because the inventory found no CI-ready test script; do not invent `npm test`.
+- **Pain addressed — setup and validation instructions are unclear:** The Node version source remains a gap until the inventory identifies `.nvmrc`, a package `engines` field, or another authoritative source.
+- **Inventory justification:** `npm ci` and `npm run build` are justified by their package/inventory install and build rows; `npm run lint` is justified only by the inventory-confirmed lint script row. The absent typecheck and test scripts justify marking those stages as gaps rather than adding invented commands.
+- **Human boundary:** CI is a consistent signal; reviewers still own judgment, merge approval, and all acceptance decisions.
 
 ## Open questions / gaps
-- [ ] Any CI-ready script missing from package.json?
-- [ ] Node version source of truth unclear?
+- [ ] Lint: confirm that `npm run lint` remains available and CI-ready.
+- [ ] Typecheck: add a CI-ready script or standalone command if type checking is expected as a required gate.
+- [ ] Test: add a CI-ready test script or document why testing is intentionally not available yet.
+- [ ] Node version source of truth remains unclear.
 - [ ] Tests that need a database: skipped, mocked, or blocked until a safe test setup exists?
 
 ## Sign-off for next step
