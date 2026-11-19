@@ -13,7 +13,7 @@ Before this work, every pull request required teammates to remember to install d
 
 **What changed:** The repository now contains a pull-request workflow scaffold and CI governance documents. A complete quality gate is still required before it can provide a trustworthy merge signal.
 
-**Source notes:** `docs/ci/pipeline-design.md`, `docs/ci/pr-pain-and-goals.md`
+**Source notes:** `docs/ci/pr-pain-and-goals.md`, `docs/ci/pipeline-design.md`
 
 ---
 
@@ -21,19 +21,20 @@ Before this work, every pull request required teammates to remember to install d
 
 | Stage | What runs | Where defined |
 | --- | --- | --- |
-| Trigger | Pull requests, without a branch filter | `.github/workflows/pr-ci.yml` |
-| Setup | Checkout, Node.js 20 setup, npm install via `npm ci` | `.github/workflows/pr-ci.yml` |
-| Quality gates | Not implemented yet; the workflow scaffold contains no typecheck, build, lint, or test step | `docs/ci/ci-scripts-notes.md` |
-| Failure behavior | Install-only job can fail, but the documented quality gate cannot yet block a PR | `docs/ci/branch-protection-checklist.md` |
+| Install | `npm ci` in the current workflow; the intended clean dependency install is documented as `npm install` | `.github/workflows/pr-ci.yml`, `docs/ci/ci-scripts-notes.md` |
+| Typecheck | Intended direct TypeScript CLI check: `npx tsc --noEmit` | `docs/ci/ci-scripts-notes.md` |
+| Build | Intended production build: `npm run build` | `docs/ci/ci-scripts-notes.md` |
+| Lint | Intended static check: `npx eslint . --max-warnings=0` | `docs/ci/ci-scripts-notes.md` |
+| Test | Intended non-watch test run: `npx vitest run` | `docs/ci/ci-scripts-notes.md` |
 
 **Plain-language summary for stakeholders:**  
-The current workflow provides an automated dependency-install check only. It does not yet prove that types, the production build, lint, or tests passed.
+The target pull-request gate is install → typecheck → build → lint → test. The current workflow still runs only the install stage, so it does not yet prove that the remaining quality stages passed.
 
-**What CI does *not* do (by design):**
-- Does not deploy production
-- Does not approve product/UX decisions
-- Does not replace reading the diff
-- Does not store or print secret values in logs
+**What CI does *not* do (by design):**  
+- Does not deploy production  
+- Does not approve product/UX decisions  
+- Does not replace reading the diff  
+- Does not store or print secret values in logs  
 - Does not run browser E2E tests
 
 ---
@@ -73,8 +74,11 @@ Point admins at `docs/ci/branch-protection-checklist.md` and require at least:
 | --- | --- | --- |
 | Workflow is install-only | PRs cannot receive an automated typecheck, build, lint, or test result | Replace the `ci` scaffold with the documented `quality` job and all five gates |
 | Install command mismatch | Workflow uses `npm ci`, while the CI notes specify `npm install`; no lockfile is present | Align the lockfile strategy and one install command in YAML and documentation |
+| Secrets and environment variables | CI may fail or produce incomplete evidence if required environment values are unavailable | Document required GitHub Secrets and environment setup; never commit `.env` values or expose secrets through `VITE_*` variables |
+| Supabase or other external services | Live integration behavior may not run safely or reliably in PR CI | Use mocks or preview/service configurations; define explicit scope for live external-service checks |
+| Flaky tests | Intermittent red results erode trust and encourage ignored failures | Stabilize or isolate flaky tests and add a quarantine plan instead of repeatedly re-running or disabling the gate |
+| Local-vs-CI script drift | Commands that work only on one machine can fail or give misleading CI results | Keep `package.json`, workflow `run:` commands, and `docs/ci/ci-scripts-notes.md` aligned |
 | Quality dependencies not declared | The lint and test one-liners are documented but not represented in `package.json` | Decide and declare the required TypeScript, ESLint, and Vitest dependencies |
-| Branch protection unverified | A green workflow would not necessarily block merge | Configure `main` and require the real `quality` check after a real PR run |
 | Browser E2E | No browser-driven E2E suite is included | Keep browser validation manual or define scope in a later sprint |
 
 ---
@@ -95,7 +99,9 @@ Summarize the end-to-end dry run from `docs/ci/e2e-verification-log.md`:
 
 | Artifact | Purpose |
 | --- | --- |
-| `.github/workflows/pr-ci.yml` | PR CI workflow scaffold |
+| `docs/ci/pr-pain-and-goals.md` | Original PR pain and success goals |
+| `docs/ci/pipeline-design.md` | Planned install, typecheck, build, lint, and test stages |
+| `.github/workflows/pr-ci.yml` | Live PR CI workflow scaffold |
 | `docs/ci/ci-scripts-notes.md` | Scripts CI is intended to run |
 | `docs/ci/branch-protection-checklist.md` | Maintainer steps to require checks |
 | `docs/ci/ai-pr-review-prompts.md` | Human-in-the-loop review prompts |
@@ -112,7 +118,7 @@ Prioritize follow-ups that improve trust without expanding scope blindly:
 2. Align `package.json`, lockfile/install strategy, workflow commands, and CI script notes.
 3. Turn on branch protection with the real `quality` check name and confirm contributors cannot merge on red.
 4. Run a real PR, record command exits and a failure experiment, and update the e2e log.
-5. Decide whether ESLint, TypeScript, Vitest, and browser E2E dependencies belong in this or a later sprint.
+5. Decide policy for secrets, external services, flakes, and browser E2E in future CI work.
 
 ---
 
