@@ -8,6 +8,7 @@
 - `docs/ci/ci-scripts-notes.md`
 - `docs/ci/branch-protection-checklist.md`
 - `docs/ci/ai-pr-review-prompts.md`
+- `package.json`
 
 ---
 
@@ -15,15 +16,19 @@
 
 | Check | Result (pass/fail) | Evidence / notes |
 | --- | --- | --- |
-| Triggers on `pull_request` (branches as designed) | Fail — verification blocked | The workflow file was listed as an input but was not accessible for inspection in this session. |
-| Job name(s) clear for GitHub status checks | Blocked | Pending direct inspection of `.github/workflows/pr-ci.yml`. |
-| Step order: checkout → runtime setup → install → typecheck → build → lint → test | Fail — verification blocked | The workflow file and CI script notes were not accessible for step-by-step comparison. |
-| Each `run:` matches scripts in `docs/ci/ci-scripts-notes.md` | Fail — verification blocked | Exact `run:` commands and script definitions could not be compared in this session. |
-| Caching / dependency install strategy present and sensible | Blocked | Requires inspection of the workflow setup and install steps. |
-| Fail-fast behavior acceptable (failed step fails the job) | Blocked | Standard GitHub Actions behavior is expected, but must be verified against the workflow. |
-| No plaintext secrets or unsafe `${{ }}` expansions in logs | Blocked | Requires direct workflow review. |
+| Triggers on `pull_request` (branches as designed) | Pass | `.github/workflows/pr-ci.yml` uses `on.pull_request` with no branch filter. It therefore needs branch-protection verification for the protected target branches. |
+| Job name(s) clear for GitHub status checks | Fail | The checklist requires a job named `quality`; `.github/workflows/pr-ci.yml` defines job `ci` with display name `Install dependencies`. |
+| Step order: checkout → runtime setup → install → typecheck → build → lint → test | Fail | Workflow contains checkout, Node setup, and install only. Typecheck, build, lint, and test steps are absent. |
+| Install `run:` matches CI script notes | Fail | Workflow runs `npm ci`; `docs/ci/ci-scripts-notes.md` specifies `npm install` and explicitly states CI uses npm with no lockfile. |
+| Typecheck `run:` exists and matches notes | Fail | No typecheck step exists. Notes require `npx tsc --noEmit`. |
+| Build `run:` exists and matches notes | Fail | No build step exists. Notes require `npm run build`. |
+| Lint `run:` exists and matches notes | Fail | No lint step exists. Notes require `npx eslint . --max-warnings=0`. |
+| Test `run:` exists and matches notes | Fail | No test step exists. Notes require `npx vitest run`. |
+| Caching / dependency install strategy present and sensible | Fail | `setup-node` enables npm caching, but `docs/ci/ci-scripts-notes.md` says no lockfile is present and `package.json` has no lockfile reference. |
+| Fail-fast behavior acceptable | Fail | No quality steps exist, so one cannot produce the documented install → typecheck → build → lint → test gate. |
+| No plaintext secrets or unsafe `${{ }}` expansions in logs | Pass | The workflow contains no environment secrets or interpreted shell expressions. |
 
-**Static review summary:** Static verification is blocked because workflow and CI documentation contents are unavailable to this session. No pass or fail claim has been inferred from filenames or repository metadata.
+**Static review summary:** The pull-request trigger is present, but the workflow is only an install scaffold. It does not implement the required quality job or quality steps, uses `npm ci` despite documented `npm install` and no lockfile, and has an incorrect check name for the branch-protection checklist.
 
 ---
 
@@ -33,15 +38,15 @@ Run the same sequence CI will run. Copy commands from `docs/ci/ci-scripts-notes.
 
 | Step | Exact command | Exit (pass/fail) | Notes |
 | --- | --- | --- | --- |
-| Install | `npm ci` | Blocked | Shell and repository execution are unavailable in this session. |
-| Typecheck | `npm run typecheck` | Blocked | The repository may define this script, but it could not be executed or confirmed. |
-| Build | `npm run build` | Blocked | No build output or exit status was available. |
-| Lint | `npm run lint` | Blocked | No lint output or exit status was available. |
-| Test | `npm test` | Blocked | Repository guidance reports that no test script is currently defined in `package.json`. |
+| Install | `npm install` | Blocked — not executed | Repository shell execution and command output are unavailable in this session. |
+| Typecheck | `npx tsc --noEmit` | Blocked — not executed | Repository shell execution is unavailable; `package.json` does not contain a separate typecheck script, so the direct CLI command must be run. |
+| Build | `npm run build` | Blocked — not executed | Repository shell execution is unavailable; no build output or exit code was available. |
+| Lint | `npx eslint . --max-warnings=0` | Blocked — not executed | ESLint is not listed in `package.json` dev dependencies, and no shell result is available. |
+| Test | `npx vitest run` | Blocked — not executed | Vitest is not listed in `package.json` dev dependencies, and no shell result is available. |
 
-**Environment notes:** Node version, package manager, and OS were not available for verification.
+**Environment notes:** Node version, npm version, package manager, and OS must be recorded by a real local run.
 
-**Local dry-run summary:** The complete sequence is blocked before execution. `npm ci`, `npm run typecheck`, `npm run build`, and `npm run lint` require a runnable workspace; `npm test` is additionally blocked because no test script is currently documented for the repository.
+**Local dry-run summary:** The exact reproduction sequence could not be executed. The first known repository-level gaps are that the workflow has no lockfile-oriented install strategy, and lint/test dependencies are not declared in `package.json`.
 
 ---
 
@@ -49,35 +54,48 @@ Run the same sequence CI will run. Copy commands from `docs/ci/ci-scripts-notes.
 
 Use `docs/ci/branch-protection-checklist.md` as the source of checklist items.
 
-| Checklist item | Status (Ready / Needs work / Blocked) | Evidence |
+| Checklist item | Status (Ready / Needs work / Blocked) | Evidence checked |
 | --- | --- | --- |
-| Workflow runs on pull requests | Blocked | No pull request or Actions run was available for verification. |
-| Check names suitable as required status checks | Blocked | Exact job/check names require workflow inspection. |
-| Concurrency / duplicate-run behavior acceptable | Blocked | Requires workflow inspection and a real PR run. |
-| Human still required for merge (CI ≠ auto-merge) | Needs work | Branch protection settings remain unconfirmed. |
-| Branch protection readiness gaps listed | Needs work | The checklist must be checked against repository settings. |
+| Protect `main` | Blocked | Requires repository admin settings; no real settings or maintainer result was available. |
+| Require status checks to pass before merging | Blocked | Branch protection settings were not available. |
+| Required check name matches the `quality` job | Fail | Checklist requires `quality`; workflow defines job `ci` named `Install dependencies`. |
+| Prefer require branches to be up to date | Blocked | No branch protection setting or real merge-base run was available. |
+| Dependency install is an enforced automated gate | Fail | Workflow performs install, but the exact command is misaligned with the CI notes and later quality gates are absent. |
+| Typecheck, build, lint, and test are enforced gates | Fail | No workflow steps implement these checks. |
+| At least one human review/approval before merge | Needs work | Must be enabled in branch protection settings; cannot be confirmed from the workflow alone. |
+| AI-assisted review prompts remain helpers only | Pass | `docs/ci/ai-pr-review-prompts.md` states AI is advisory and only a human may approve or merge. |
+| Secret/config and product-intent review remains human-owned | Pass | The checklist and AI prompt pack reserve these concerns for human review. |
+| Do not require optional/flaky jobs | Pass | The workflow declares only the existing install job; no optional deploy or flaky job is present. |
+| Do not require deploy/production jobs on PR | Pass | The workflow contains no deploy or production job. |
+| Do not store secrets in PR CI | Pass | `.github/workflows/pr-ci.yml` contains no secrets or secret values. |
+| Workflow path/sign-off is documented | Needs work | Path is present, but real PR check-run date and maintainer sign-off are not. |
+| Trigger is `pull_request` to protected branch list | Needs work | Trigger passes statically; protected branch settings remain unverified. |
+| Concurrency cancels runs for the same PR | Fail | No `concurrency` configuration exists in `.github/workflows/pr-ci.yml`. |
+| PR CI does not include browser E2E | Pass — explicitly documented gap | The checklist and CI notes explicitly state that browser E2E is deferred/manual. |
+| Human can edit branch protection | Blocked | Maintainer identity and admin access were not provided. |
 
-**PR loop summary:** A teammate cannot yet rely on a verified PR → CI loop without an actual workflow run and branch protection review.
+**PR loop summary:** The static signal is not trustworthy as a merge gate. The workflow is missing the `quality` job and all quality steps, so it cannot pass or block on typecheck/build/lint/test. Branch protection and a real PR Actions run remain unverified.
 
 ---
 
 ## 4. AI-assisted review dry-run (human remains accountable)
 
-**Sample change used:** Documentation-only update to `docs/ci/e2e-verification-log.md`, recording static and local CI evidence without inventing command results.  
-**Prompt chosen:** General PR review prompt from `docs/ci/ai-pr-review-prompts.md`, focused on scope, evidence accuracy, and residual risk.  
+**Sample change used:** Concrete diff is the `.github/workflows/pr-ci.yml` scaffold, which changes PR CI from only checkout + Node setup + `npm ci` to the intended quality gate location; also compared against `docs/ci/ci-scripts-notes.md`.  
+**Prompt chosen:** Prompt 2 — “Risk flags (auth, Supabase, migrations)” from `docs/ci/ai-pr-review-prompts.md`. It was used conservatively because the concrete diff is CI/configuration rather than application or data code.  
 **Tool category used:** Chat assistant
 
 **AI output — what helped:**
-- Highlighted the need to distinguish confirmed evidence from unavailable or blocked verification.
-- Avoided presenting assumed command exits or workflow behavior as results.
+- No auth, Supabase, migration, secret, or destructive-data risk is visible in the workflow diff.
+- Identified CI coverage risk: the workflow does not implement the quality checks named by the CI inventory.
+- Identified human/accountability concern: successful install must not be presented as a complete green PR gate.
 
 **AI output — problems (if any):**
-- Could not inspect `.github/workflows/pr-ci.yml`, `ci-scripts-notes.md`, or run repository commands.
-- No bug approval or merge recommendation was made.
+- No CI exit evidence was inferred or claimed.
+- No claim of code safety or merge readiness was made.
 
-**Human judgment call:** Ask for more information and require re-verification. The documentation must not be treated as a passing gate until workflow and command evidence are available.
+**Human judgment call:** **Ask for changes; do not approve or merge.** Before merge, convert the scaffold to the documented quality gate, align the required job/check name, add the five quality steps, add concurrency, and verify branch protection against a real PR.
 
-**Prompt fix applied?** No — the local prompt source was unavailable for a direct prompt-title comparison. A future run should include the exact source prompt title and a result that explicitly separates evidence from inference.
+**Prompt fix applied?** No source prompt change was needed. The prompt should remain restricted to review signals and should not claim CI passed or failed.
 
 ---
 
@@ -85,9 +103,9 @@ Use `docs/ci/branch-protection-checklist.md` as the source of checklist items.
 
 | Cycle | What failed | Fix applied (file + change) | Re-verify result |
 | --- | --- | --- | --- |
-| 1 | Static workflow and local command evidence could not be obtained. | `docs/ci/e2e-verification-log.md` — replaced assumptions with explicit blocked reasons and unresolved checks. | Blocked until the repository is available in a shell with Actions access. |
+| 1 | Static review found install-only scaffold; missing `quality` job and quality steps; `npm ci` disagrees with CI notes; no concurrency; required check name is unresolved. | `docs/ci/e2e-verification-log.md` — replaced scaffold assumptions with file-based pass/fail evidence and unresolved runtime checks. | Static results re-recorded from the supplied workflow and CI documents. Runtime, branch protection, and Actions verification remain blocked. |
 
-**Residual risk:** The local dry-run and PR loop may reveal missing scripts or workflow configuration that are not represented here.
+**Residual risk:** The workflow may continue to report a green install-only check while omitting typecheck, build, lint, test, and required merge protection.
 
 ---
 
@@ -96,15 +114,17 @@ Use `docs/ci/branch-protection-checklist.md` as the source of checklist items.
 **Overall gate status:** Not ready
 
 **Known gaps still open:**
-1. Direct inspection of `.github/workflows/pr-ci.yml` and `docs/ci/ci-scripts-notes.md` is required.
-2. Install, typecheck, build, lint, and test commands must be run locally and recorded with real exits.
-3. An actual pull request, Actions run, and branch protection settings must be verified.
+1. Implement and name the quality job and the complete ordered quality-gate steps.
+2. Align the install command, lockfile strategy, and documented scripts.
+3. Run and record real local command exits and verify a real PR Actions run.
+4. Configure `main` branch protection and the `quality` required status check.
 
 **Safe for Sprint 6 stakeholder handoff?** No
 
 **Notes for Step 12 handoff:**
-- The PR CI work should be described as implemented in draft but not yet end-to-end verified.
-- A no-test-script condition remains open and must be resolved or explicitly reported as a sprint limitation.
-- Required status check names and branch protection settings are not yet confirmed.
-- The gate should remain blocked until a real PR produces an Actions run and all CI commands complete.
-- Human review remains mandatory; AI review was not used as an approval mechanism.
+- The PR CI workflow is currently an install-only scaffold, not an implemented quality gate.
+- The documented required check name is `quality`, but the workflow currently uses job `ci` with name `Install dependencies`.
+- The workflow does not run typecheck, build, lint, or test.
+- Workflow verification found no `concurrency` cancellation setting and no lockfile for npm cache/install alignment.
+- Browser E2E is explicitly deferred/manual and is not a PR CI gate.
+- The gate remains blocked until real command exits, a real PR run, and branch protection sign-off are recorded.
