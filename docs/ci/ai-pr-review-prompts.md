@@ -5,10 +5,10 @@ Use these prompts with a chat-assistant or ide-copilot when reviewing a
 pull request on the PREIshare dashboard. They speed up human review.
 They do **not** replace CI, and they do **not** replace a human merge decision.
 
-**CI currently covers:** dependency installation with `npm ci`
+**CI already covers:** install, typecheck, build, lint, and test on each PR
 (see `docs/ci/pipeline-design.md` and `.github/workflows/pr-ci.yml`).
-**Humans still cover:** lint, typecheck, build, tests, product intent, auth safety,
-Supabase data access, migrations, secrets, and the final approve/merge call.
+**Humans still cover:** product intent, auth safety, Supabase data access,
+migrations, secrets, and the final approve/merge call.
 
 ## How to use this pack
 1. Open the PR diff on GitHub (or locally with `git diff main...HEAD`).
@@ -62,9 +62,9 @@ Diff:
 
 ```text
 You are a security-and-data risk assistant for PREIshare. Review the diff below
-ONLY for risk signals. CI currently checks dependency installation only; do not
-repeat install concerns or invent pass/fail results for lint, typecheck, tests,
-or builds.
+ONLY for risk signals. CI already runs install, typecheck, build, lint, and test;
+do not repeat those automated checks or claim that they passed or failed unless
+CI results are provided.
 
 Flag risks in these buckets (skip a bucket if nothing relevant appears):
 - Auth / session / route protection
@@ -130,10 +130,10 @@ Diff:
 
 ## Optional follow-up — Map AI notes back to CI
 
-If the assistant identifies a gap that CI should eventually catch, open
-`docs/ci/pipeline-design.md` and `.github/workflows/pr-ci.yml` and decide whether
-to add a workflow stage. Do **not** add lint, typecheck, test, or build stages
-without a separate team decision.
+If the assistant identifies a gap in coverage, open `docs/ci/pipeline-design.md`
+and `.github/workflows/pr-ci.yml` and check whether CI already covers that concern.
+Do not describe install, typecheck, build, lint, or test as missing human-owned
+CI stages; they remain CI checks with human review outside the automated pipeline.
 
 ## Human merge authority (non-negotiable)
 - AI output in this pack is advisory only.
