@@ -2,8 +2,8 @@
 
 **Audience:** PREIshare product owners, tech leads, and reviewers  
 **Sprint goal:** Continuous integration on every pull request + AI-assisted review that does not replace human judgment  
-**Date:** [YYYY-MM-DD]  
-**Author:** [Your name]
+**Date:** 2026-11-19  
+**Author:** GitHub Copilot (AI-assisted draft)
 
 ---
 
@@ -11,9 +11,9 @@
 
 Before this work, every pull request required teammates to remember to install dependencies, typecheck, build, lint, and test on their own machines. That was slow, easy to skip, and let broken code reach the main branch.
 
-**What changed:** Every pull request now gets a consistent automated check run via GitHub Actions. Humans still decide whether the change is correct for the product and whether it is safe to merge.
+**What changed:** The repository now contains a pull-request workflow scaffold and CI governance documents. A complete quality gate is still required before it can provide a trustworthy merge signal.
 
-**Source notes:** `docs/ci/pr-pain-and-goals.md`, `docs/ci/pipeline-design.md`
+**Source notes:** `docs/ci/pipeline-design.md`, `docs/ci/pr-pain-and-goals.md`
 
 ---
 
@@ -21,19 +21,20 @@ Before this work, every pull request required teammates to remember to install d
 
 | Stage | What runs | Where defined |
 | --- | --- | --- |
-| Trigger | Pull requests to protected/default branches (see workflow `on:`) | `.github/workflows/pr-ci.yml` |
-| Setup | Checkout, Node setup, dependency install (with cache if configured) | same |
-| Quality gates | Typecheck → build → lint → test (order per pipeline design) | same + `docs/ci/ci-scripts-notes.md` |
-| Failure behavior | Job fails red on the PR; merge should be blocked once branch protection is on | `docs/ci/branch-protection-checklist.md` |
+| Trigger | Pull requests, without a branch filter | `.github/workflows/pr-ci.yml` |
+| Setup | Checkout, Node.js 20 setup, npm install via `npm ci` | `.github/workflows/pr-ci.yml` |
+| Quality gates | Not implemented yet; the workflow scaffold contains no typecheck, build, lint, or test step | `docs/ci/ci-scripts-notes.md` |
+| Failure behavior | Install-only job can fail, but the documented quality gate cannot yet block a PR | `docs/ci/branch-protection-checklist.md` |
 
 **Plain-language summary for stakeholders:**  
-If install, types, build, lint, or tests break, the PR shows a failed check. Teammates should fix the PR before merge—not skip the check.
+The current workflow provides an automated dependency-install check only. It does not yet prove that types, the production build, lint, or tests passed.
 
-**What CI does *not* do (by design):**  
-- Does not deploy production  
-- Does not approve product/UX decisions  
-- Does not replace reading the diff  
+**What CI does *not* do (by design):**
+- Does not deploy production
+- Does not approve product/UX decisions
+- Does not replace reading the diff
 - Does not store or print secret values in logs
+- Does not run browser E2E tests
 
 ---
 
@@ -41,14 +42,14 @@ If install, types, build, lint, or tests break, the PR shows a failed check. Tea
 
 | Decision | Owner | Why it stays human |
 | --- | --- | --- |
-| Merge approval | Reviewer / maintainer | CI proves the suite passed, not that the feature is right |
+| Merge approval | Reviewer / maintainer | CI proves only the automated checks it actually ran |
 | Using AI review prompts | Reviewer | AI suggestions can miss context, security nuance, or product intent |
 | Secret and env configuration | Maintainer | Credentials must not live in the workflow file or PR body |
 | Enabling required status checks | Repo admin | Branch protection is a repo setting, not only a YAML file |
-| Accepting known flaky failures | Tech lead | Flakes need a fix or quarantine plan, not blind re-runs forever |
+| Accepting known verification gaps | Tech lead | Gaps need fixes or documented sprint limitations |
 
 **AI-assisted review boundary:**  
-Use the prompt pack in `docs/ci/ai-pr-review-prompts.md` to speed reading (risk spots, missing tests, unclear naming). A human must still approve or request changes. AI output is advice, not a merge vote.
+Use the prompt pack in `docs/ci/ai-pr-review-prompts.md` to speed reading. A human must still approve or request changes. AI output is advice, not a merge vote.
 
 ---
 
@@ -56,26 +57,25 @@ Use the prompt pack in `docs/ci/ai-pr-review-prompts.md` to speed reading (risk 
 
 Point admins at `docs/ci/branch-protection-checklist.md` and require at least:
 
-1. Protect the main/default branch.
-2. Require the CI job/check name from `pr-ci.yml` to pass before merge.
+1. Protect the `main` branch.
+2. Require the `quality` CI job/check to pass before merge.
 3. Require at least one human review.
 4. Do not allow bypassing checks for routine contributor work.
 
 **Status after verification:** [ ] Not enabled yet  /  [ ] Enabled on main  
-**Evidence:** see `docs/ci/e2e-verification-log.md`
+**Evidence:** `.github/workflows/pr-ci.yml` currently defines job `ci`, not `quality`; branch-protection settings were not available to verify.
 
 ---
 
 ## 5. Known limits and risks (honest scope)
 
-Call out only limits you actually saw or designed around:
-
 | Limit | Impact | Recommended next action |
 | --- | --- | --- |
-| Secrets / private env | Full Supabase-backed integration tests may not run in PR CI without careful secret setup | Document required GitHub Secrets; never commit `.env` |
-| Supabase / external services | PR CI may use mocks or skip live DB paths | Decide in next sprint whether preview envs or service containers are worth it |
-| Flaky tests | Intermittent red X erodes trust in the gate | Quarantine or fix flakes; do not disable the whole workflow |
-| Local vs CI script drift | Scripts that only work on one laptop break the gate | Keep npm/pnpm scripts aligned with `docs/ci/ci-scripts-notes.md` |
+| Workflow is install-only | PRs cannot receive an automated typecheck, build, lint, or test result | Replace the `ci` scaffold with the documented `quality` job and all five gates |
+| Install command mismatch | Workflow uses `npm ci`, while the CI notes specify `npm install`; no lockfile is present | Align the lockfile strategy and one install command in YAML and documentation |
+| Quality dependencies not declared | The lint and test one-liners are documented but not represented in `package.json` | Decide and declare the required TypeScript, ESLint, and Vitest dependencies |
+| Branch protection unverified | A green workflow would not necessarily block merge | Configure `main` and require the real `quality` check after a real PR run |
+| Browser E2E | No browser-driven E2E suite is included | Keep browser validation manual or define scope in a later sprint |
 
 ---
 
@@ -83,26 +83,24 @@ Call out only limits you actually saw or designed around:
 
 Summarize the end-to-end dry run from `docs/ci/e2e-verification-log.md`:
 
-- **PR opened / workflow triggered:** yes/no — [link or run id if available]
-- **Expected steps ran in order:** yes/no
-- **Intentional failure experiment (optional):** yes/no — did the check go red?
-- **AI review prompt trial:** yes/no — human still made the final call?
-- **Blockers found:** [list or "none"]
+- **PR opened / workflow triggered:** No — no real pull request or Actions run was available.
+- **Expected steps ran in order:** No — the workflow has checkout, Node setup, and install only; typecheck, build, lint, and test are absent.
+- **Intentional failure experiment:** No — the workflow and commands were not executed in a real PR.
+- **AI review prompt trial:** Yes — Prompt 2, “Risk flags (auth, Supabase, migrations),” was applied to the workflow/documentation diff; the human call was to ask for changes and not merge.
+- **Blockers:** The `quality` job and quality steps are missing; `npm ci` conflicts with the documented install command; lint/test dependencies are undeclared; branch protection and real Action results remain unverified.
 
 ---
 
-## 7. Artifact index (where everything lives)
+## 7. Artifact index
 
 | Artifact | Purpose |
 | --- | --- |
-| `docs/ci/pr-pain-and-goals.md` | Original PR pain and success goals |
-| `docs/ci/pipeline-design.md` | Planned stages before YAML |
-| `.github/workflows/pr-ci.yml` | Live PR CI workflow |
-| `docs/ci/ci-scripts-notes.md` | Scripts CI relies on |
-| `docs/ci/branch-protection-checklist.md` | Admin steps to require checks |
+| `.github/workflows/pr-ci.yml` | PR CI workflow scaffold |
+| `docs/ci/ci-scripts-notes.md` | Scripts CI is intended to run |
+| `docs/ci/branch-protection-checklist.md` | Maintainer steps to require checks |
 | `docs/ci/ai-pr-review-prompts.md` | Human-in-the-loop review prompts |
-| `docs/ci/e2e-verification-log.md` | Proof the loop was exercised |
-| `docs/ci/stakeholder-handoff.md` | This handoff |
+| `docs/ci/e2e-verification-log.md` | Static, local, and PR-loop verification evidence |
+| `docs/ci/stakeholder-handoff.md` | Sprint 6 stakeholder handoff |
 
 ---
 
@@ -110,14 +108,14 @@ Summarize the end-to-end dry run from `docs/ci/e2e-verification-log.md`:
 
 Prioritize follow-ups that improve trust without expanding scope blindly:
 
-1. Turn on branch protection with the real check name and confirm contributors cannot merge on red.
-2. Stabilize any flaky or environment-specific tests discovered in the verification log.
-3. Decide policy for secrets and optional Supabase-backed checks on PRs.
-4. Refine AI review prompts after one or two real PR trials (keep humans accountable).
-5. [Add any project-specific item from your e2e log.]
+1. Implement the documented `quality` job and install → typecheck → build → lint → test sequence.
+2. Align `package.json`, lockfile/install strategy, workflow commands, and CI script notes.
+3. Turn on branch protection with the real `quality` check name and confirm contributors cannot merge on red.
+4. Run a real PR, record command exits and a failure experiment, and update the e2e log.
+5. Decide whether ESLint, TypeScript, Vitest, and browser E2E dependencies belong in this or a later sprint.
 
 ---
 
 ## 9. One-paragraph executive summary
 
-PREIshare pull requests now run an automated install → typecheck → build → lint → test workflow so broken changes fail in public instead of on a teammate’s laptop. AI-assisted prompts can speed review, but merge decisions, secret handling, and product judgment stay with humans. Admins should enable branch protection using the checklist, and the next sprint topic should tackle remaining environment, flake, and policy gaps listed above.
+PREIshare has a pull-request workflow scaffold and CI governance documents, but it is not yet a complete install → typecheck → build → lint → test quality gate. The workflow currently performs dependency install only, does not match the documented `quality` check name or install command in every detail, and has not been exercised through a real PR or branch-protection configuration. AI-assisted prompts can speed review, but merge decisions, secret handling, and product judgment stay with humans; branch protection and real CI verification should be completed before stakeholder handoff.
