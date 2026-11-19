@@ -4,10 +4,10 @@ Replace every bracket with a complete sentence a classmate could read. Do not le
 
 ## Words we will use
 
-- **Pull request:** [One sentence: a proposal to change the shared project, not the change itself until a person accepts it.]
-- **CI check:** [One sentence: the automatic run of install, typecheck, build, lint, and test. A green check means those commands passed.]
-- **Merge:** [One sentence: a person accepts the proposal so it becomes part of the main shared copy.]
-- **Review comment:** [One sentence: a note on the proposal. It is not an approval and not a merge.]
+- **Pull request:** A pull request is a proposal to change the shared project, but the change is not part of the main copy until a person accepts it.
+- **CI check:** A CI check is the automatic run of install, typecheck, build, lint, and test. A green check means those commands passed, not that every product or security concern is resolved.
+- **Merge:** Merge is the action in which a person accepts a pull request so that its changes become part of the main shared copy.
+- **Review comment:** A review comment is a note added to a proposed change for the author or a human reviewer to consider. It is not an approval and not a merge.
 
 ## What topic 1 already finished
 
@@ -41,10 +41,10 @@ Name only these. Later steps will write them. This brief only names them.
 
 ## Risks a green check cannot decide
 
-- **Sign-in:** [Who is allowed to be logged in, and why a passing test cannot decide that alone.]
-- **Money:** [Charges, payments, or money records, and why a passing test cannot decide that alone.]
-- **Privacy:** [Member information, such as an email, reaching the wrong people.]
-- **Product intent:** [Whether the change still matches what PREIshare is for.]
+- **Sign-in:** A green CI check cannot decide who should be allowed to sign in, which session or route protections are correct, or whether authentication behavior still matches PREIshare’s access policy.
+- **Money:** A green CI check cannot decide whether charges, payments, balances, or money records are lawful, accurate, approved, or protected from unintended changes.
+- **Privacy:** A green CI check cannot decide whether member information such as an email can reach the wrong person, role, system, or public view.
+- **Product intent:** A green CI check cannot decide whether the change still matches PREIshare’s purpose, user experience, stakeholder expectations, or planned behavior.
 
 ## Who is allowed to decide
 
@@ -55,4 +55,4 @@ Name only these. Later steps will write them. This brief only names them.
 
 ## How we will direct the agent
 
-[Two or three sentences: we plan, draft, then critique, and we keep only `docs/ci/ai-review-overlay-brief.md` from this step.]
+We will plan the review by identifying the requested scope, evidence, and prohibited decisions before drafting. We will draft a concise response in the required format, then critique that response for unsupported claims, invented behavior, or language that could imply approval or merge. This step keeps only `docs/ci/ai-review-overlay-brief.md` as the added artifact.
