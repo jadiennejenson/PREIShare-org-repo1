@@ -14,12 +14,12 @@ Approve is not merge. A green pr-ci check is not approve, and it is not merge.
 
 | Role | Who (name or job you can point to) | May do | Must not do |
 | --- | --- | --- | --- |
-| Author | {{AUTHOR}} | Open the pull request and update it after feedback | Be the only human who approves, or merge alone, when the change touches privacy, sign-in, or money |
-| Human reviewer | {{REVIEWER}} | Read the change, comment, approve, or request changes | Hand the approve button to the AI assistant |
-| Maintainer | {{MAINTAINER}} | Merge only after the human approval and the existing pr-ci check | Merge because an AI comment said the change looks fine |
+| Author | Named pull request author | Open the pull request and update it after feedback | Be the only human who approves, or merge alone, when the change touches privacy, sign-in, or money |
+| Human reviewer | Repository reviewer assigned to the pull request | Read the change, comment, approve, or request changes | Hand the approve button to the AI assistant |
+| Maintainer | Repository maintainer assigned to complete the merge | Merge only after the human approval and the existing pr-ci check | Merge because an AI comment said the change looks fine |
 | AI assistant | Chat assistant used as an advisor | Comment with suggested notes for the human reviewer | Approve, request changes as if it were a GitHub reviewer, or merge |
 
-If {{REVIEWER}} and {{MAINTAINER}} are the same person, write that person's name in both rows and say so in a sentence under the table. Do not leave either job as "the team" or "someone."
+The human reviewer and maintainer are separate assigned repository jobs in this document.
 
 ## What the AI assistant may and must not do
 
@@ -35,11 +35,11 @@ Request changes is an official GitHub review outcome that sends the proposal bac
 
 ## Merge paths
 
-Every allowed path ends with a named human. The AI assistant is never the last actor.
+Every allowed path ends with the named repository maintainer. The AI assistant is never the last actor.
 
-1. {{AUTHOR}} opens the pull request. The existing pr-ci check runs. {{REVIEWER}} approves. {{MAINTAINER}} merges.
-2. The pr-ci check fails. {{AUTHOR}} fixes the proposal. The check passes. {{REVIEWER}} approves. {{MAINTAINER}} merges.
-3. {{REVIEWER}} requests changes. {{AUTHOR}} updates the proposal. {{REVIEWER}} approves. {{MAINTAINER}} merges.
+1. The named pull request author opens the pull request. The existing pr-ci check runs. The assigned repository reviewer approves. The assigned repository maintainer merges.
+2. The pr-ci check fails. The named pull request author fixes the proposal. The check passes. The assigned repository reviewer approves. The assigned repository maintainer merges.
+3. The assigned repository reviewer requests changes. The named pull request author updates the proposal. The assigned repository reviewer approves. The assigned repository maintainer merges.
 
 Forbidden path, not allowed: the AI assistant comments that the change looks fine, and the proposal is merged with no named human approval.
 
@@ -56,4 +56,4 @@ This document does not change GitHub settings. It does not turn branch protectio
 
 ## Accountability
 
-If a bad change is merged, the person who answers is {{MAINTAINER}}, after {{REVIEWER}} approved. The AI assistant does not answer for the merge.
+If a bad change is merged, the person who answers is the assigned repository maintainer, after the assigned repository reviewer approved. The AI assistant does not answer for the merge.
