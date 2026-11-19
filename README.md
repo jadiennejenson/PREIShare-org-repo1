@@ -1,22 +1,25 @@
-# PREIshare Investor Dashboard Shell
+# PREIshare
 
-This project scaffolds the PREIshare investor dashboard shell with TanStack Start and TypeScript at the repo root.
+PREIshare is an investor dashboard shell for tracking real estate projects, financial performance, and investor activity. It uses React 19, Vite, TanStack Start, TanStack Router, and Supabase.
 
-## Install
+## Setup
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-## Run locally
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Then open the local app in your browser at `http://localhost:3000`.
+Open the local URL printed by Vite.
 
-## Project notes
-- Planning docs live in `docs/` (information architecture and component plan).
-- File-based routes live under `src/routes/`.
-- Dashboard area routes (portfolio, deals, profile) are added in a later step—do not invent them in the scaffold.
+## Production build
+
+```bash
+npm run build
+```
