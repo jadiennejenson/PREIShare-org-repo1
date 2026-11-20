@@ -24,8 +24,8 @@ These pieces already exist. Point to them. Do not rewrite them here.
 
 Copy these lines from `docs/ci/pr-approval-roles.md`. If the same person may both approve and merge, say that. Do not invent a new role. Replace every FILL before you commit.
 
-- People who may approve: FILL
-- People who may merge: FILL
+- People who may approve: Human reviewer / Actual Reviewer Name
+- People who may merge: Maintainer / Actual Maintainer Name
 - AI assistant: advisor only. It may suggest findings. It may not approve. It may not merge. It may not start the review by itself.
 
 ## Where to click
