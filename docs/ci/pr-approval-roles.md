@@ -57,3 +57,8 @@ This document does not change GitHub settings. It does not turn branch protectio
 ## Accountability
 
 If a bad change is merged, the person who answers is Actual Maintainer Name, after Actual Reviewer Name approved. The AI assistant does not answer for the merge.
+
+## Permissions
+
+- People who may approve: Human reviewer / Actual Reviewer Name
+- People who may merge: Maintainer / Actual Maintainer Name
